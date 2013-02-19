@@ -255,22 +255,23 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
                 
                 }
                 
-                public function SortUp($id){
+                public function SortUp($id,$userId){
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		
-                    return $map->SortUP($id,$this->_tableName, 'navigation', 'page', 'sort', 'desc', $this->_class);
+                    return $map->SortUP($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'desc', $this->_class);
 	        
                 
                 }
                 
-                public function SortDown($id){
+                public function SortDown($id,$userId){
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		
-                    return $map->SortDOWN($id,$this->_tableName, 'navigation', 'page', 'sort', 'desc', $this->_class);
+                    return $map->SortDOWN($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'asc', $this->_class);
 	        
                 
                 }
+              
 }
 

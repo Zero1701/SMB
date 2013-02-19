@@ -110,13 +110,13 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
     }
     
     public function fetchAllByColumnName($table_name, $class_name, $value, $column_name){
-       echo $table_name;
-        $dbtable = $this->getDbTable($table_name); 
-       
-        $select = $dbtable->select()->where($column_name . ' = ?', $value);
-        echo $select->__toString();
-        //$result=$this->getDbTable($table_name)->fetchAll($select);
-
+        
+        $select = $this->getDbTable($table_name)
+                ->select()->setIntegrityCheck(false)->from($table_name)
+                ->where($column_name . ' = ?', $value);
+        $result=$this->getDbTable($table_name)->fetchAll($select);
+        
+      
         $entries=array();
 
         foreach($result as $row){
@@ -222,69 +222,106 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
        
         }
         
-        public function SortUP($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
             
          $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
          $currentPageId = $currentSort[0]->getId();
-         $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $currentPageId, 'page_id');
+         
+         $navigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $currentPageId, 'page_id');
+         
+         $currentNavigationId = $navigation[0]->getId();
+         
+
          
          
-//         $db = Zend_Db_Table::getDefaultAdapter();
-//         
-//       $select = $db->select()->from('navigation')->where('page_id = ?', $currentPageId);
-//       $rez = $db->fetchRow($select);
-//       
-//       $currentPageNum = (int) $rez['page_id'];
-//       $currSortNum = (int) ($currentSort[0]->getSort());
-//       $lang = (int) $currentSort[0]->getLang();
-//        
-//         
-//         $result = $this->fetchRowInnerJoinLang($lang,$table_name,true ,$table_name2,$foreignId,$sortName,$sort,$currSortNum, $class_name);
-//         
-//      
-//         if(!empty($result))
-//         {
-//             $dataCurr = array();
-//             $dataCurr['id'] = $currentPageNum;
-//             $dataCurr['sort'] = (int) ($currSortNum - 1);
-//          
-            // $this->save($dataCurr, $table_name2);
+       $currSortNum = (int) ($currentSort[0]->getSort());
+       $lang = (int) $currentSort[0]->getLang();
+        
+         
+         $result = $this->fetchRowInnerJoinLang($lang, $table_name, $currentPageId,$currSortNum, true, $table_name2, $foreignId, $sortName, $sort, 'Application_Model_Pages_Data_Pages');
+         
+        
+         if(!empty($result))
+         {
              
-//             $dataPrev = array();
-//             $dataPrev['id'] = $result[0]->getid();
-//             $dataPrev['sort'] = (int) $currentSort[0]->getsort();
-//             $this->save($dataPrev, $table_name2);
-//         }
+         $prevNavigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $result[0]->getId(), 'page_id');
+         
+         $prevNavigationId = $prevNavigation[0]->getId();
+        
+         $nav = new Application_Model_Navigation_Data_Navigation();
+             $dataCurr = array();
+             $dataCurr['id'] = $currentNavigationId;
+             $dataCurr['sort'] = (int) ($currSortNum - 1);
+             $dataCurr['editedby'] = (int) $userId;
+             $dataCurr['editedon'] = new Zend_Db_Expr('NOW()');
+             
+             $nav->save($dataCurr);
+             
+             $dataPrev = array();
+             $dataPrev['id'] = $prevNavigationId;
+             $dataPrev['sort'] = (int) $currentSort[0]->getsort();
+             $dataPrev['editedby'] = (int) $userId;
+             $dataPrev['editedon'] = new Zend_Db_Expr('NOW()');
+             
+             $nav->save($dataPrev);
+         }
     
-         //return $result;
+         return $result;
             
         }
         
-        public function SortDOWN($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function SortDOWN($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
             
          $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
-            
-         $lang = (int) $currentSort[0]->getLang();
-         $currSortNum = (int) ($currentSort[0]->getSort());
-       
          
-         $result = $this->fetchRowInnerJoinLang($lang,$table_name,false, $table_name2,$foreignId,$sortName,$sort,$currSortNum, $class_name);
+         $currentPageId = $currentSort[0]->getId();
+         
+         $navigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $currentPageId, 'page_id');
+         
+       
+        $currentNavigationId = $navigation[0]->getId();
          
 
-//         if(!empty($result))
-//         {
-//             $dataCurr = array();
-//             $dataCurr['id'] = $currentSort[0]->getid();
-//             $dataCurr['sort'] = (int) ($currSortNum + 1);
-//             $this->save($dataCurr, $table_name2);
-//             
-//             $dataPrev = array();
-//             $dataPrev['id'] = $result[0]->getid();
-//             $dataPrev['sort'] = (int) $currentSort[0]->getsort();
-//             $this->save($dataPrev, $table_name2);
-//         }
-//  
-//         return $result;
+         
+         
+       $currSortNum = (int) ($currentSort[0]->getSort());
+    
+       $lang = (int) $currentSort[0]->getLang();
+        
+         
+         $result = $this->fetchRowInnerJoinLang($lang, $table_name, $currentPageId,$currSortNum, false, $table_name2, $foreignId, $sortName, $sort, 'Application_Model_Pages_Data_Pages');
+
+         if(!empty($result))
+         {
+             
+         $prevNavigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $result[0]->getId(), 'page_id');
+         
+         $prevNavigationId = $prevNavigation[0]->getId();
+        
+         $nav = new Application_Model_Navigation_Data_Navigation();
+             $dataCurr = array();
+             $dataCurr['id'] = $currentNavigationId;
+             $dataCurr['sort'] = (int) ($currSortNum + 1);
+             $dataCurr['editedby'] = (int) $userId;
+             $dataCurr['editedon'] = new Zend_Db_Expr('NOW()');
+           
+             $nav->save($dataCurr);
+            
+             
+             $dataPrev = array();
+             $dataPrev['id'] = $prevNavigationId;
+             $dataPrev['sort'] = (int) $currentSort[0]->getsort();
+             $dataPrev['editedby'] = (int) $userId;
+             $dataPrev['editedon'] = new Zend_Db_Expr('NOW()');
+             
+             $nav->save($dataPrev);
+            
+     
+             
+         }
+    
+         return $result;
+           
             
         }
         
@@ -342,7 +379,8 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
                ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id', 'sort')
                ->where($table_name . '.id = ?', $id)
                ->order($sortName . ' ' . $sort);
-             
+           
+        
         $result=$this->getDbTable($table_name)->fetchAll($select);
        
         $entries=array();
@@ -360,12 +398,12 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
-    public function fetchRowInnerJoinLang($lang,$table_name,$minMax ,$table_name2,$foreignId,$sortName,$sort,$value, $class_name){
+    public function fetchRowInnerJoinLang($lang,$table_name,$tableId,$sortNum,$minMax ,$table_name2,$foreignId,$sortName,$sort, $class_name){
         
         if($minMax == true){
-            $operator = '<';
+            $operator = '<=';
         } else {
-            $operator = '>';
+            $operator = '>=';
         }
         
         $dbtable1 = $this->getDbTable($table_name);
@@ -374,11 +412,13 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
                ->from($table_name,'*')
                ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id', 'sort')
                ->where($table_name . '.lang = ?', $lang)
-               ->where($sortName . ' ' . $operator . ' ?', $value)
+               ->where($sortName . ' ' . $operator . ' ?', $sortNum)
+               ->where ($table_name2 . '.' . $foreignId . '_id <> ?', $tableId)
                ->order($sortName . ' ' . $sort)
                ->limitPage(0,1);
+
         
-        
+     
              
         $result=$this->getDbTable($table_name)->fetchAll($select);
        

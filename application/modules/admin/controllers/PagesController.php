@@ -27,13 +27,14 @@ class Admin_PagesController extends Zend_Controller_Action
         }
         
         $request = $this->getRequest();
+        $user = trim(Zend_Auth::getInstance()->getIdentity()->id);
         
         
         
-        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
+        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
         $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/delete','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/delete','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $this->view->deleteForm = $deleteForm;
         
         $upForm = new Admin_Form_EditDelete(array('action' => '#','method' => 'post','id' => 'up','class' => 'up','name' => 'up','submitLabel' => '+' ));
@@ -46,6 +47,17 @@ class Admin_PagesController extends Zend_Controller_Action
         $lang = new Application_Model_Lang_Data_Lang();
         $userData = new Application_Model_UserData_Data_UserData();
         
+        if($request->isPost()){
+            
+           
+              if($request->getParam('submitButton') == '+'){ $pages->SortUp($request->getParam('id'),$user);};
+              if($request->getParam('submitButton') == '-'){ $pages->SortDown($request->getParam('id'), $user);};
+         
+           
+            $request->setParam('submitButton', null);
+            
+        }
+        
         if($this->hasParam('page')) {
             $allPages = $pages->getInnerJoin($this->getParam('page'));
             $this->view->pageNum = $allPages->getPages()->pageCount;
@@ -55,15 +67,7 @@ class Admin_PagesController extends Zend_Controller_Action
             $this->view->pageNum = $allPages->getPages()->pageCount;
         }
         
-        if($request->isPost()){
-            //if(isset($request->getParam('submitButton')) && !empty($request->getParam('submitButton')));
-           // {
-           
-              if($request->getParam('submitButton') == '+'){ $pages->SortUp($request->getParam('id'));};
-              if($request->getParam('submitButton') == '-'){ $pages->SortDown($request->getParam('id'));};
-           // }
-            //unset($request);
-        }
+        
         
         $this->view->pages = $allPages;
         $this->view->lang = $lang;
@@ -165,40 +169,56 @@ class Admin_PagesController extends Zend_Controller_Action
         else
         {
             
-        $form = new Admin_Form_Article();
-        $articles = new Application_Model_Articles_Data_Articles();
-        $row = $articles->getRowById($id);
+        $form = new Admin_Form_Page();
+        $pages = new Application_Model_Pages_Data_Pages();
+        $row = $pages->getRowById($id);
         if($row)
      {
-        
+           
+       $navigation = new Application_Model_Navigation_Data_Navigation();
+       
+       $navRow = $navigation->getPageDataById($row[0]->getId());
+       
+  
      
-        $date = new Zend_Date((string) trim($row[0]->getDate()));
+        
         $form->getElement('title')->setValue((string) trim($row[0]->getTitle()));
         $form->getElement('language')->setValue((int) trim($row[0]->getLang()));
         $form->getElement('status')->setValue((int) trim($row[0]->getStatus()));
-        $form->getElement('beginDate')->setValue($date->get('dd.MM.yyyy. hh:mm:ss'));
-        $form->getElement('description')->setValue((string) trim($row[0]->getDescription()));
+        $form->getElement('header')->setValue((boolean) trim($navRow[0]->getInc_in_header()));
+        $form->getElement('footer')->setValue((boolean) trim($navRow[0]->getInc_in_footer()));
+        $form->getElement('content')->setValue((string) trim($row[0]->getContents()));
         
      
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
-        $data = array();
-        $date = new Zend_Date(trim($requestParams['beginDate']));
+        $pageData = array();
+        $navigationData = array();
+        
+        
         $user = trim(Zend_Auth::getInstance()->getIdentity()->id);
-        $data['id'] = $id;
-        $data['title'] = trim($requestParams['title']);
-        $data['date'] = $date->get('yyyy-MM-dd');
-        $data['description'] = trim($requestParams['description']);
-        $data['status'] = trim($requestParams['status']);
-        $data['editedby'] = $user;
-        $data['editedon'] = new Zend_Db_Expr('NOW()');
-        $data['lang'] = trim($requestParams['language']);
+        $pageData['id'] = $id;
+        $pageData['status'] = trim((int) $requestParams['status']);
+        $pageData['title'] = trim((string) $requestParams['title']);
+        $pageData['contents'] = trim((string) $requestParams['content']);
+        $pageData['editedby'] = $user;
+        $pageData['editedon'] = new Zend_Db_Expr('NOW()');
+        $pageData['lang'] = trim($requestParams['language']);
         
-        $articles->save($data);
+        $navigationData['id'] = trim($navRow[0]->getId());
+        $navigationData['inc_in_header'] = trim((int) $requestParams['header']);
+        $navigationData['inc_in_footer'] = trim((int) $requestParams['footer']);
+        $navigationData['editedby'] = $user;
+        $navigationData['editedon'] = new Zend_Db_Expr('NOW()');
+        print_r($pageData);
+        print_r($navigationData);
+       
+        $pages->save($pageData);
+        $navigation->save($navigationData);
         
-        $successMessage = "Article successfully edited.";        
+        $successMessage = "Page successfully edited.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
-        $this->redirect('admin/articles/index');
+        $this->redirect('admin/pages/index');
           
         }
         }

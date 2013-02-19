@@ -142,6 +142,14 @@ class Application_Model_Navigation_Data_Navigation extends Application_Model_Abs
                     
                     return $map->fetchMax($this->_tableName, $this->_class);
                 }
+                
+                public function getPageDataById($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'page_id');
+                    
+                }
                  
 }
 
