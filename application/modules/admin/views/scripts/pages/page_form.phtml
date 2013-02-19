@@ -1,0 +1,46 @@
+<form action="<?php echo $this->escape($this->element->getAction()); ?>" 
+      method="<?php echo $this->escape($this->element->getMethod()); ?>"
+      name="<?php echo $this->escape($this->element->getName());?>"
+      id="<?php echo $this->escape($this->element->getAttrib('id'));?>"
+      class="<?php echo $this->escape($this->element->getAttrib('class'));?>"
+      enctype="<?php echo $this->escape($this->element->getAttrib('enctype'));?>">
+
+    <div>
+    <label for="title">Title :</label>
+    <?php echo $this->element->title;?>
+    </div>
+    
+    <div>
+    <label for="language">Language :</label>
+    <?php echo $this->element->language; ?>
+    </div>
+    
+    <div>
+    <label for="status">Status :</label>
+    <?php echo $this->element->status; ?>
+    </div>
+  
+    <div>
+    <label for="header">Include in header :</label>
+    <?php echo $this->element->header; ?>
+    </div>
+    
+    <div>
+    <label for="footer">Include in footer :</label>
+    <?php echo $this->element->footer; ?>
+    </div>
+    
+    <div>
+    <label for="content">Page content :</label>
+    <?php echo $this->element->content; ?>
+    </div>
+    
+    <div>
+    <label for="file">Images upload :</label>
+    <?php echo $this->element->file; ?>
+    </div>
+    
+<div class="submit">
+    <?php echo $this->element->submitButton; ?>
+</div>
+</form>

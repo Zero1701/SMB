@@ -1,0 +1,20 @@
+<form action="<?php echo $this->escape($this->element->getAction()); ?>" 
+      method="<?php echo $this->escape($this->element->getMethod()); ?>"
+      name="<?php echo $this->escape($this->element->getName());?>"
+      id="<?php echo $this->escape($this->element->getAttrib('id'));?>"
+      class="<?php echo $this->escape($this->element->getAttrib('class'));?>">
+
+    <div>
+    <label for="userName">Korisničko ime :</label>
+    <?php echo $this->element->userName;?>
+    </div>
+    
+    <div>
+    <label for="password">Lozinka :</label>
+    <?php echo $this->element->password; ?>
+    </div>
+    
+<div class="submit">
+    <?php echo $this->element->submitButton; ?>
+</div>
+</form>

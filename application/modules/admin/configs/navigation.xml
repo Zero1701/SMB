@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configdata>
+	<nav>
+		<home>
+			<label>Dashboard</label>
+			<uri>/admin/index/dashboard</uri>
+		</home>
+		<articles>
+			<label>Articles</label>
+			<uri>/admin/articles</uri>
+                </articles>
+               
+		<pages>
+			<label>Pages</label>
+			<uri>/admin/pages</uri>
+		</pages>
+		<gallery>
+			<label>Gallery</label>
+			<uri>/admin/gallery</uri>
+		</gallery>
+	<!--	<pages>
+			<label>Cms</label>
+			<uri>/admin/cms</uri>
+		</pages> -->
+	</nav>
+
+</configdata>

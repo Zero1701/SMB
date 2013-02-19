@@ -1,0 +1,32 @@
+
+<?php $this->placeholder('sidebar')->captureStart(); ?>
+
+	<?php if($this->latestArticles) { ?>
+<div class = "block-title"><h3>Articles</h3></div>
+        <ul>
+         <?php  foreach($this->latestArticles as $key => $val){ ?>
+	<li><p>Title: <?php echo $val->getTitle(); ?></p></li>
+	      <?php } ?>
+	</ul>
+    <?php } ?>
+    
+    <?php if($this->latestPages) {  ?>
+<div class = "block-title"><h3>Pages</h3></div>
+        <ul>
+         <?php foreach($this->latestPages as $key => $val){ ?>
+	<li><p>Title: <?php echo $val->getTitle(); ?></p></li>
+               <?php } ?>
+	</ul>
+	<?php } ?>
+
+	<?php if($this->latestProducts) { ?>
+<div class = "block-title"><h3>Products</h3></div>
+        <ul>
+        <?php foreach($this->latestProducts as $key => $val){ ?>
+	<li><p>Name: <?php echo $val->getName(); ?></p>
+            <p>Short description: <?php echo $val->getShort_desc(); ?></p></li>
+	      <?php } ?>
+	</ul>
+	<?php } ?>
+	
+<?php $this->placeholder('sidebar')->captureEnd(); ?>

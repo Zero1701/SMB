@@ -1,0 +1,35 @@
+<form action="<?php echo $this->escape($this->element->getAction()); ?>" 
+      method="<?php echo $this->escape($this->element->getMethod()); ?>"
+      name="<?php echo $this->escape($this->element->getName());?>"
+      id="<?php echo $this->escape($this->element->getAttrib('id'));?>"
+      class="<?php echo $this->escape($this->element->getAttrib('class'));?>">
+
+    <div>
+    <label for="title">Title :</label>
+    <?php echo $this->element->title;?>
+    </div>
+    
+    <div>
+    <label for="language">Language :</label>
+    <?php echo $this->element->language; ?>
+    </div>
+    
+    <div>
+    <label for="status">Status :</label>
+    <?php echo $this->element->status; ?>
+    </div>
+    
+    <div>
+    <label for="beginDate">Date :</label>
+    <?php echo $this->element->beginDate; ?>
+    </div>
+    
+    <div>
+    <label for="description">Description :</label>
+    <?php echo $this->element->description; ?>
+    </div>
+    
+<div class="submit">
+    <?php echo $this->element->submitButton; ?>
+</div>
+</form>

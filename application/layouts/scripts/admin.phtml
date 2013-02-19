@@ -1,0 +1,31 @@
+<!doctype html>
+
+<head>
+<?php  $this->jQuery()->enable()
+            ->setVersion('1.8');
+        echo $this->jQuery(); ?>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<title>SMB | Admin</title>
+<?php //echo $this->headLink()->appendStylesheet('../../resources/admin/css/style.css');?>
+</head>
+<body>
+	<div class="admin-wrapper">
+		<div class="header">
+			<div class="nav">
+			<?php echo $this->navigation()->menu();?>
+			</div>
+		</div>
+		<div class="main">
+			<?php echo $this->placeholder('sidebar')?>
+			
+			<div class = "content">
+			
+			<?php echo $this->layout()->content; ?>
+			</div>
+		</div>
+		
+		<div class="footer">
+		
+		</div>
+	</div>
+</body>
