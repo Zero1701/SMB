@@ -222,9 +222,9 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
        
         }
         
-        public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2) {
             
-         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
+         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2);
          $currentPageId = $currentSort[0]->getId();
          
          $navigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $currentPageId, 'page_id');
@@ -270,9 +270,9 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
             
         }
         
-        public function SortDOWN($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function SortDOWN($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2) {
             
-         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
+         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2);
          
          $currentPageId = $currentSort[0]->getId();
          
@@ -345,7 +345,9 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
     	$select->setIntegrityCheck(false)
                ->from($table_name)
                ->join($table_name2, $table_name.'.id = ' . $table_name2 . '.' . $foreignId . '_id' , null)
+               ->order($table_name . '.lang asc')
                ->order($table_name2 . '.' . $sortName . ' ' . $sort);
+        
         
              
         $result=$this->getDbTable($table_name)->fetchAll($select);
@@ -370,14 +372,14 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
-    public function fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name){
+    public function fetchAllInnerJoinId($id,$table_name,$table_name2,$foreignId,$sortName,$sort,$class_name,$whereClause,$selectFromTable,$selectFromTable2){
         
         $dbtable1 = $this->getDbTable($table_name);    
         $select = $dbtable1->select();
     	$select->setIntegrityCheck(false)
-               ->from($table_name,'*')
-               ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id', 'sort')
-               ->where($table_name . '.id = ?', $id)
+               ->from($table_name,$selectFromTable)
+               ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id',$selectFromTable2)
+               ->where($whereClause . ' = ?', $id)
                ->order($sortName . ' ' . $sort);
            
         

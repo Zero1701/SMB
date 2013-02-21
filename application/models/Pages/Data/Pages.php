@@ -180,8 +180,8 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
                     
                 $adapter = new Zend_File_Transfer_Adapter_Http();
                 $files = $adapter->getFileInfo();
-                $path = APPLICATION_PATH . '\\Images\\Pages\\' . $id . '\\';
-                $path2 = APPLICATION_PATH . '\\Images\\Pages\\' . $id;
+                $path = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\') . '\\';
+                $path2 = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\');
                
                 $image = new Application_Model_Images_Data_Images();
                 $ImgToPage = new Application_Model_ImgToPage_Data_ImgToPage();
@@ -259,7 +259,7 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		
-                    return $map->SortUP($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'desc', $this->_class);
+                    return $map->SortUP($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'desc', $this->_class,$this->_tableName . '.id','*','sort');
 	        
                 
                 }
@@ -268,10 +268,27 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		
-                    return $map->SortDOWN($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'asc', $this->_class);
+                    return $map->SortDOWN($id,$userId,$this->_tableName, 'navigation', 'page', 'sort', 'asc', $this->_class,$this->_tableName . '.id','*','sort');
 	        
                 
                 }
-              
+                
+                function deleteFolder($id) {
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\');
+                    if (is_dir($folderPath)) { 
+                    $objects = scandir($folderPath); 
+                        foreach ($objects as $object) { 
+                           if ($object != '.' && $object != '..') { 
+                                if (filetype($folderPath . '/' . $object) == 'dir'){
+                                deleteDirectory($folderPath . '/' . $object);
+                                }else{
+                                unlink($folderPath . '/' . $object);
+                                } 
+                           } 
+                    reset($objects); 
+                    rmdir($folderPath); 
+                    } 
+                  }
+                }
 }
 

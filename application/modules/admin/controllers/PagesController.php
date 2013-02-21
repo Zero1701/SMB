@@ -34,7 +34,7 @@ class Admin_PagesController extends Zend_Controller_Action
         $editForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
         $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/delete','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/deletepage','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $this->view->deleteForm = $deleteForm;
         
         $upForm = new Admin_Form_EditDelete(array('action' => '#','method' => 'post','id' => 'up','class' => 'up','name' => 'up','submitLabel' => '+' ));
@@ -170,15 +170,24 @@ class Admin_PagesController extends Zend_Controller_Action
         {
             
         $form = new Admin_Form_Page();
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/deleteimage', 'method' => 'get', 'id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $pages = new Application_Model_Pages_Data_Pages();
         $row = $pages->getRowById($id);
         if($row)
      {
-           
+       
+       
+        
+        
        $navigation = new Application_Model_Navigation_Data_Navigation();
        
-       $navRow = $navigation->getPageDataById($row[0]->getId());
+       $image = new Application_Model_Images_Data_Images();
+       $imagePath = '/Images/Pages/' . $id . '/';
+       $images = $image->getAllImagesByPageId($row[0]->getId());
        
+       
+       $navRow = $navigation->getPageDataById($row[0]->getId());
+     
   
      
         
@@ -210,11 +219,11 @@ class Admin_PagesController extends Zend_Controller_Action
         $navigationData['inc_in_footer'] = trim((int) $requestParams['footer']);
         $navigationData['editedby'] = $user;
         $navigationData['editedon'] = new Zend_Db_Expr('NOW()');
-        print_r($pageData);
-        print_r($navigationData);
+      
        
         $pages->save($pageData);
         $navigation->save($navigationData);
+        $pages->saveImg($id, true, $user);
         
         $successMessage = "Page successfully edited.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
@@ -223,6 +232,10 @@ class Admin_PagesController extends Zend_Controller_Action
         }
         }
         $this->view->form = $form;
+        $this->view->images = $images;
+        $this->view->imagePath = $imagePath;
+        $this->view->deleteForm = $deleteForm;
+        
         }
         else
         {
@@ -233,7 +246,7 @@ class Admin_PagesController extends Zend_Controller_Action
     }
     }
     
-    public function deleteAction() {
+    public function deleteimageAction() {
         
         $this->mergeQueryString();
          if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -256,24 +269,111 @@ class Admin_PagesController extends Zend_Controller_Action
         {
             
         $form = new Admin_Form_Delete();
-        $articles = new Application_Model_Articles_Data_Articles();
-        $row = $articles->getRowById($id);
+        $image = new Application_Model_Images_Data_Images();
+        $row = $image->getRowById($id);
         if($row)
      {
+       $imageToPage = new Application_Model_ImgToPage_Data_ImgToPage();
+       
+       $imageToPageRow = $imageToPage->getRowByImageId($id);
+       $imageToPageId = $imageToPageRow[0]->getId();
+       
      
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
           
             $del = $request->getParam('del');
             if ($del == 'Yes') {
-                $articles->delete($id);
+                
+                
+                $imageToPage->delete($imageToPageId);
+                $image->delete($id);
+                $image->unlinkImage($imageToPageRow[0]->getPage_id(),$row[0]->getImg());
                 
                 $successMessage = "Article successfully deleted.";        
                 $this->_helper->FlashMessenger->addMessage($successMessage, 'actions'); 
                 
-                $this->redirect('admin/articles/index');
+                $this->redirect('admin/pages/edit/id/' . $imageToPageRow[0]->getPage_id());
                 } else {
-                $this->redirect('admin/articles/index');
+                $this->redirect('admin/pages/edit/id/' . $imageToPageRow[0]->getPage_id());
+                }       
+          
+        }
+        }
+        
+        $this->view->form = $form;
+        } else {
+          $errorMessage = 'Invalid id parameter';
+          $this->view->errorMessage = $errorMessage;  
+        }
+        
+    }
+        
+    }
+    
+    public function deletepageAction() {
+        
+        $this->mergeQueryString();
+         if(!Zend_Auth::getInstance()->hasIdentity()){
+            $this->redirect('admin/index/login');
+        }
+        
+        $request = $this->getRequest();
+        $requestParams = $this->getRequest()->getParams();
+       
+        if(isset($requestParams['id']))
+       {
+        $id = $requestParams['id'];
+       }
+        
+        if(!$this->hasParam('id')) {
+            $errorMessage = 'Invalid id parameter';
+            $this->view->errorMessage = $errorMessage;
+        }
+        else
+        {
+            
+        $form = new Admin_Form_Delete();
+        $page = new Application_Model_Pages_Data_Pages();
+        $row = $page->getRowById($id);
+        if($row)
+     {
+       $image = new Application_Model_Images_Data_Images();     
+            
+       $imageToPage = new Application_Model_ImgToPage_Data_ImgToPage();
+       
+       $allImageToPage = $imageToPage->getAllByPageId($id);
+       
+       $allImages = $image->getAllImagesByPageId($id);            
+     
+        if($request->isPost()){
+        if($form->isValid($this->_request->getPost())){
+          
+            $del = $request->getParam('del');
+            if ($del == 'Yes') {
+                
+                foreach ($allImageToPage as $key) {
+                    
+                    $imageToPage->delete($key->getId());
+                    
+                }
+                
+                foreach ($allImages as $key) {
+                    
+                    $image->delete($key->getId());
+                }
+                
+                $page->delete($id);
+                
+                $page->deleteFolder($id);
+                
+                $successMessage = "Page successfully deleted.";
+                
+                $this->_helper->FlashMessenger->addMessage($successMessage, 'actions'); 
+                
+                $this->redirect('admin/pages/index');
+                } else {
+                $this->redirect('admin/pages/index');
                 }       
           
         }

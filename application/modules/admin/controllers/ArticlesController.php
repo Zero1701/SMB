@@ -26,10 +26,10 @@ class Admin_ArticlesController extends Zend_Controller_Action
             $this->redirect('admin/index/login');
         }
         
-        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/edit','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
+        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/edit','id' => 'edit','method' =>'get','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
         $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/delete','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/delete','method' =>'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $this->view->deleteForm = $deleteForm;
         
         $articles = new Application_Model_Articles_Data_Articles();
