@@ -65,6 +65,30 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
+    public function fetchAllWhereColumnValueIsPaginator($table_name, $class_name,$column,$value,$page = null){
+        $result=$this->getDbTable($table_name)->fetchAll($this->_dbtable->select()
+                                                        ->where($column . ' = ?', $value));
+
+        $entries=array();
+
+        foreach($result as $row){
+            $entry = new $class_name();
+
+            $entry->setOptions($row->toArray());
+
+            $entries[] = $entry;
+        }
+
+        $paginationCount = 3;
+        $pageRange = 5;
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_Array($entries));
+        $paginator->setItemCountPerPage($paginationCount);
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setPageRange($pageRange);
+        return $paginator;
+
+    }
+    
         public function fetchLast($table_name, $class_name,$limit){
         $result=$this->getDbTable($table_name)->fetchAll($this->_dbtable->select()
                                                         ->where('status = 1')

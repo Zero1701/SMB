@@ -9,6 +9,11 @@ class Admin_PagesController extends Zend_Controller_Action
         
         $uri=$this->_request->getControllerName();
         $active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        if(!$active) {
+        	$uri=$this->_request->getActionName();
+        	$active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        }
+        
         $active->active = true;
         
       	$pages = new Application_Model_Pages_Data_Pages();

@@ -1,10 +1,11 @@
 <?php
 
-class Application_Model_ImgToPage_Data_ImgToPage extends Application_Model_Abstract_Abstract
+class Application_Model_ImgToProduct_Data_ImgToProduct extends Application_Model_Abstract_Abstract
 {
 
                 protected $_id;
-                protected $_page_id;
+                protected $_title;
+                protected $_product_id;
                 protected $_image_id;
     		protected $_createdby;
     		protected $_editedby;
@@ -13,8 +14,8 @@ class Application_Model_ImgToPage_Data_ImgToPage extends Application_Model_Abstr
                 
 
 
-                protected $_tableName = 'imgtopage';
-                protected $_class = 'Application_Model_ImgToPage_Data_ImgToPage';
+                protected $_tableName = 'imgtoproduct';
+                protected $_class = 'Application_Model_ImgToProduct_Data_ImgToProduct';
     
                 public function setId($id)
                 {
@@ -27,15 +28,15 @@ class Application_Model_ImgToPage_Data_ImgToPage extends Application_Model_Abstr
                     return $this->_id;
                 }
                 
-                public function setPage_id($page_id)
+                public function setProduct_id($product_id)
                 {
-                    $this ->_page_id = (int) $page_id;
+                    $this ->_product_id = (int) $product_id;
                     return $this;
                 }
         
-                public function getPage_id()
+                public function getProduct_id()
                 {
-                    return $this->_page_id;
+                    return $this->_product_id;
                 }
                 
                  public function setImage_id($image_id)

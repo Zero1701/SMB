@@ -1,23 +1,23 @@
 <?php
 
-class Application_Model_Articles_Data_Articles extends Application_Model_Abstract_Abstract
+class Application_Model_Categories_Data_Categories extends Application_Model_Abstract_Abstract
 {
 
                 protected $_id;
                 protected $_title;
-                protected $_date;
+                protected $_short_desc;
     		protected $_description;
-                protected $_featured;
-                protected $_status;
-    		protected $_createdby;
+                protected $_createdby;
     		protected $_editedby;
 		protected $_createdon;
     		protected $_editedon;
+                protected $_status;
+                protected $_image_id;
                 protected $_lang; 
 
 
-                protected $_tableName = 'articles';
-                protected $_class = 'Application_Model_Articles_Data_Articles';
+                protected $_tableName = 'categories';
+                protected $_class = 'Application_Model_Categories_Data_Categories';
     
                 public function setId($id)
                 {
@@ -43,15 +43,15 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
       
                 }
                 
-                  public function setDate($date)
+                  public function setShort_desc($short_desc)
                 {
-                    $this ->_date = (string) $date;
+                    $this ->_short_desc = (string) $short_desc;
                     return $this;
                 }
         
-                public function getDate()
+                public function getShort_desc()
                 {
-                    return $this->_date;
+                    return $this->_short_desc;
       
                 }
                 
@@ -66,29 +66,7 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                     return $this->_description;
       
                 }
-                
-                public function setFeatured($featured)
-                {
-                    $this ->_featured = (boolean) $featured;
-                    return $this;
-                }
-        
-                public function getFeatured()
-                {
-                    return $this->_featured;
-                }
-                
-		public function setStatus($status)
-                {
-                    $this ->_status = (boolean) $status;
-                    return $this;
-                }
-        
-                public function getStatus()
-                {
-                    return $this->_status;
-                }
-                
+                                
 		public function setCreatedby($createdby)
                 {
                     $this ->_createdby = (int) $createdby;
@@ -133,6 +111,28 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                     return $this->_editedon;
                 }
                 
+                public function setStatus($status)
+                {
+                    $this ->_status = (boolean) $status;
+                    return $this;
+                }
+        
+                public function getStatus()
+                {
+                    return $this->_status;
+                }
+                
+                public function setImage_id($image_id)
+                {
+                    $this ->_image_id = (int) $image_id;
+                    return $this;
+                }
+        
+                public function getImage_id()
+                {
+                    return $this->_image_id;
+                }
+                
                 public function setLang($lang)
                 {
                     $this ->_lang = (string) $lang;
@@ -147,32 +147,8 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                 
                 
                 //-----------------------------------------------
-               public function getLatest($limit){
-                    
-                      $map = new Application_Model_DbMapper_DbMapper();
-		
-                      return $map->fetchLast($this->_tableName, $this->_class, $limit);
-                
-                }
-                
-                
-                public function getAllPaginator($page = 1){
-                
-                	$map = new Application_Model_DbMapper_DbMapper();
-                
-                	return $map->fetchAllPaginator($this->_tableName, $this->_class, $page);
-                
-                }
-                
-                public function getAllFeaturedArticlesPaginator($page = 1){
-                
-                	$map = new Application_Model_DbMapper_DbMapper();
-                
-                	return $map->fetchAllWhereColumnValueIsPaginator($this->_tableName, $this->_class,'featured',1, $page);
-                
-                }
-                
-                public function save($data){
+            
+                 public function save($data){
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		

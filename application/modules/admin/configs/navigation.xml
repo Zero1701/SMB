@@ -27,7 +27,7 @@
 				
 				<articles_feat>
 					<label>Featured articles</label>
-					<uri>/admin/articles</uri>
+					<uri>/admin/articles/featured</uri>
 					<class>art-feat</class>
 				</articles_feat>
 				

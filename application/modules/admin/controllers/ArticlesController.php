@@ -7,8 +7,14 @@ class Admin_ArticlesController extends Zend_Controller_Action
     {
         $this->_helper->layout->setLayout('admin');
         
-        $uri=$this->_request->getPathInfo();
-        $active = $this->view->navigation()->findByUri($uri);
+       
+        $uri=$this->_request->getControllerName();
+        $active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        if(!$active) {
+        	$uri=$this->_request->getActionName();
+        	$active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        }
+        
         $active->active = true;
         
       	$articles = new Application_Model_Articles_Data_Articles();
@@ -72,6 +78,7 @@ class Admin_ArticlesController extends Zend_Controller_Action
         $data['title'] = trim($requestParams['title']);
         $data['date'] = $date->get('yyyy-MM-dd');
         $data['description'] = trim($requestParams['description']);
+        $data['featured'] = trim($requestParams['featured']);
         $data['status'] = trim($requestParams['status']);
         $data['createdby'] = $user;
         $data['editedby'] = $user;
@@ -122,6 +129,7 @@ class Admin_ArticlesController extends Zend_Controller_Action
         $date = new Zend_Date((string) trim($row[0]->getDate()));
         $form->getElement('title')->setValue((string) trim($row[0]->getTitle()));
         $form->getElement('language')->setValue((int) trim($row[0]->getLang()));
+        $form->getElement('featured')->setValue((int) trim($row[0]->getFeatured()));
         $form->getElement('status')->setValue((int) trim($row[0]->getStatus()));
         $form->getElement('beginDate')->setValue($date->get('dd.MM.yyyy. hh:mm:ss'));
         $form->getElement('description')->setValue((string) trim($row[0]->getDescription()));
@@ -136,6 +144,7 @@ class Admin_ArticlesController extends Zend_Controller_Action
         $data['title'] = trim($requestParams['title']);
         $data['date'] = $date->get('yyyy-MM-dd');
         $data['description'] = trim($requestParams['description']);
+        $data['featured'] = trim($requestParams['featured']);
         $data['status'] = trim($requestParams['status']);
         $data['editedby'] = $user;
         $data['editedon'] = new Zend_Db_Expr('NOW()');
@@ -215,5 +224,36 @@ class Admin_ArticlesController extends Zend_Controller_Action
     }
         
     }
+    
+   public function featuredAction(){
+        if(!Zend_Auth::getInstance()->hasIdentity()){
+            $this->redirect('admin/index/login');
+        }
+        
+        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/edit','id' => 'edit','method' =>'get','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
+        $this->view->editForm = $editForm;
+        
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/articles/delete','method' =>'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $this->view->deleteForm = $deleteForm;
+        
+        $articles = new Application_Model_Articles_Data_Articles();
+        $lang = new Application_Model_Lang_Data_Lang();
+        $userData = new Application_Model_UserData_Data_UserData();
+        
+        if($this->hasParam('page')) {
+            $allArticles = $articles->getAllFeaturedArticlesPaginator($this->getParam('page'));
+            $this->view->pageNum = $allArticles->getPages()->pageCount;
+        }
+        else {
+            $allArticles = $articles->getAllFeaturedArticlesPaginator(1);
+            $this->view->pageNum = $allArticles->getPages()->pageCount;
+        }
+        
+        $this->view->articles = $allArticles;
+        $this->view->lang = $lang;
+        $this->view->userData = $userData;
+        $this->view->messages = $this->_helper->flashMessenger->getMessages('actions');
+   }
+           
 }
 
