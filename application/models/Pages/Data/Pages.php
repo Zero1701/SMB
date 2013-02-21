@@ -180,8 +180,8 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
                     
                 $adapter = new Zend_File_Transfer_Adapter_Http();
                 $files = $adapter->getFileInfo();
-                $path = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\') . '\\';
-                $path2 = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\');
+                $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\pages\\' . $id . '\\';
+                $path2 = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\pages\\' . $id;
                
                 $image = new Application_Model_Images_Data_Images();
                 $ImgToPage = new Application_Model_ImgToPage_Data_ImgToPage();
@@ -273,8 +273,8 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
                 
                 }
                 
-                function deleteFolder($id) {
-                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\');
+                function deleteFolder($id,$subFolderName) {
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\' . $subFolderName . '\\' . $id . '\\');
                     if (is_dir($folderPath)) { 
                     $objects = scandir($folderPath); 
                         foreach ($objects as $object) { 

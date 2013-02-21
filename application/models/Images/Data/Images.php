@@ -111,6 +111,13 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                     return $map->fetchAllInnerJoinId($id, $this->_tableName, 'imgtopage', 'image', $this->_tableName . '.id', 'asc', $this->_class,'imgtopage.page_id','*',null);
                 }
                 
+                 public function getAllImagesByProductId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'imgtoproduct', 'image', $this->_tableName . '.id', 'asc', $this->_class,'imgtoproduct.product_id','*',null);
+                }
+                
                  public function getRowById($id){
                       
                     $map = new Application_Model_DbMapper_DbMapper();
@@ -128,9 +135,9 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                 
                 }
                 
-                public function unlinkImage($id,$name) {
+                public function unlinkImage($id,$name,$imgSubFolder) {
                    
-                    $path = realpath(APPLICATION_PATH . '\\..\\Public\\Images\\Pages\\' . $id . '\\') . '\\';
+                    $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\' . $imgSubFolder . '\\' . $id . '\\';
                     
                     
                     unlink($path . $name);

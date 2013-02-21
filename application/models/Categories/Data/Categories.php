@@ -166,6 +166,15 @@ class Application_Model_Categories_Data_Categories extends Application_Model_Abs
                     
                 }
                 
+                 public function getAllCategoriesByProductId($id){
+                      
+                  
+                    $map = new Application_Model_DbMapper_DbMapper();
+                 
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categorytoproduct', 'category', $this->_tableName . '.title', 'asc', $this->_class, 'categorytoproduct.product_id', '*', null);
+                    
+                }
+                
                 public function delete($id){
 		
                     $map = new Application_Model_DbMapper_DbMapper();

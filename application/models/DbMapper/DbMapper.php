@@ -406,7 +406,7 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
                ->where($whereClause . ' = ?', $id)
                ->order($sortName . ' ' . $sort);
            
-        
+        //echo $select->__toString();
         $result=$this->getDbTable($table_name)->fetchAll($select);
        
         $entries=array();
