@@ -13,7 +13,15 @@ class Admin_IndexController extends Zend_Controller_Action
         {
         $uri=$this->_request->getControllerName();
         $active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        if(!$active) {
+        	$uri=$this->_request->getActionName();
+        	$active = $this->view->navigation()->findBy('label',ucfirst($uri));
+        }
+        
         $active->active = true;
+        
+        
+        
         }
         
         $products = new Application_Model_Products_Data_Products();
