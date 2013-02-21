@@ -5,20 +5,50 @@
 		<home>
 			<label>Dashboard</label>
 			<uri>/admin/index/dashboard</uri>
+			<class>dash</class>
 		</home>
 		<articles>
 			<label>Articles</label>
 			<uri>/admin/articles</uri>
-                </articles>
+			<class>article</class>
+			<pages>
+				
+				<articles_new>
+					<label>Add new article</label>
+					<uri>/admin/articles/new</uri>
+					<class>art-new</class>
+				</articles_new>
+				
+				<articles_all>
+					<label>All articles</label>
+					<uri>/admin/articles</uri>
+					<class>arts</class>
+				</articles_all>
+				
+				<articles_feat>
+					<label>Featured articles</label>
+					<uri>/admin/articles</uri>
+					<class>art-feat</class>
+				</articles_feat>
+				
+			</pages>
+        </articles>
                
 		<pages>
 			<label>Pages</label>
 			<uri>/admin/pages</uri>
+			<class>page</class>
 		</pages>
 		<gallery>
 			<label>Gallery</label>
 			<uri>/admin/gallery</uri>
+			<class>gall</class>
 		</gallery>
+		<settings>
+			<label>Settings</label>
+			<uri>/admin/index/dashboard</uri>
+			<class>settings</class>
+		</settings>
 	<!--	<pages>
 			<label>Cms</label>
 			<uri>/admin/cms</uri>
