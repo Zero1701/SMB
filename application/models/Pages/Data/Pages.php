@@ -273,22 +273,13 @@ class Application_Model_Pages_Data_Pages extends Application_Model_Abstract_Abst
                 
                 }
                 
-                function deleteFolder($id,$subFolderName) {
-                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\' . $subFolderName . '\\' . $id . '\\');
-                    if (is_dir($folderPath)) { 
-                    $objects = scandir($folderPath); 
-                        foreach ($objects as $object) { 
-                           if ($object != '.' && $object != '..') { 
-                                if (filetype($folderPath . '/' . $object) == 'dir'){
-                                deleteDirectory($folderPath . '/' . $object);
-                                }else{
-                                unlink($folderPath . '/' . $object);
-                                } 
-                           } 
-                    reset($objects); 
-                    rmdir($folderPath); 
-                    } 
-                  }
+                public function deleteFolder($id){
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\pages\\' . $id . '\\');
+                    
+                    return $map->deleteAll($folderPath);
                 }
 }
 

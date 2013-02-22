@@ -31,10 +31,11 @@ class Admin_ProductsController extends Zend_Controller_Action
             $this->redirect('admin/index/login');
         }
        
+        
         $editForm = new Admin_Form_EditDelete(array('action' => '/admin/products/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
         $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/products/deletepage','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/products/deleteproduct','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $this->view->deleteForm = $deleteForm;
        
         $products = new Application_Model_Products_Data_Products();
@@ -51,7 +52,7 @@ class Admin_ProductsController extends Zend_Controller_Action
             $this->view->pageNum = $allProducts->getPages()->pageCount;
         }
         
-      
+   
         
         $this->view->products = $allProducts;
         $this->view->lang = $lang;
@@ -102,7 +103,7 @@ class Admin_ProductsController extends Zend_Controller_Action
 
         $successMessage = "Page successfully created.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
-        $this->redirect('admin/pages/index');
+        $this->redirect('admin/products/index');
         
         }
         }
@@ -215,15 +216,21 @@ class Admin_ProductsController extends Zend_Controller_Action
         if(!$this->hasParam('id')) {
             $errorMessage = 'Invalid id parameter';
             $this->view->errorMessage = $errorMessage;
+         
+            return false;
         }
-        else
-        {
+    
             
         $form = new Admin_Form_Delete();
         $image = new Application_Model_Images_Data_Images();
         $row = $image->getRowById($id);
-        if($row)
+        if(!isset($row) && empty($row))
      {
+          $errorMessage = 'Invalid id parameter';
+          $this->view->errorMessage = $errorMessage;
+          return false;
+     }
+     
        $imageToProduct = new Application_Model_ImgToProduct_Data_ImgToProduct();
        
        $imageToProductRow = $imageToProduct->getRowByImageId($id);
@@ -231,7 +238,15 @@ class Admin_ProductsController extends Zend_Controller_Action
        {
        $imageToProductId = $imageToProductRow[0]->getId();
        }
-         if(isset($imageToProductId) && !empty($imageToProductId)){
+        
+       if(!isset($imageToProductId) && empty($imageToProductId)){
+          $errorMessage = 'This image is not linked to this product';
+          $this->view->errorMessage = $errorMessage;  
+           return false; 
+          
+             
+         }
+         
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
           
@@ -255,19 +270,11 @@ class Admin_ProductsController extends Zend_Controller_Action
         }
         
         $this->view->form = $form;
-        } else {
-          $errorMessage = 'This image is not linked to this product';
-          $this->view->errorMessage = $errorMessage;  
-        }
-     } else {
-          $errorMessage = 'Invalid id parameter';
-          $this->view->errorMessage = $errorMessage;  
-    }
+        
         
         }
-    }
     
-    public function deletepageAction() {
+    public function deleteproductAction() {
         
         $this->mergeQueryString();
          if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -290,17 +297,42 @@ class Admin_ProductsController extends Zend_Controller_Action
         {
             
         $form = new Admin_Form_Delete();
-        $page = new Application_Model_Pages_Data_Pages();
-        $row = $page->getRowById($id);
-        if($row)
+        $product = new Application_Model_Products_Data_Products();
+        $row = $product->getRowById($id);
+          if(!isset($row) && empty($row))
      {
+          $errorMessage = 'Invalid id parameter';
+          $this->view->errorMessage = $errorMessage;
+          return false;
+     }
+     
+     $rowId = $row[0]->getId();
+     
+     $categories = new Application_Model_Categories_Data_Categories();
+     
+    $category = $categories->getAllCategoriesByProductId($rowId);
+        
+    
+    if(isset($category) && !empty($category)){ 
+          
+                $categoryName = '';
+                foreach ($category as $key2) {
+                $categoryName .= $key2->getTitle();
+                $categoryName .= ', ';
+                } 
+               
+          $errorMessage = 'This product cannot be deleted because it is bound to the following categories: ' . rtrim($categoryName, ', ');
+          $this->view->errorMessage = $errorMessage;
+          return false;
+          
+          }
        $image = new Application_Model_Images_Data_Images();     
             
-       $imageToPage = new Application_Model_ImgToPage_Data_ImgToPage();
+       $imageToProduct = new Application_Model_ImgToProduct_Data_ImgToProduct();
        
-       $allImageToPage = $imageToPage->getAllByPageId($id);
+       $allImageToPage = $imageToProduct->getAllByProductId($id);
        
-       $allImages = $image->getAllImagesByPageId($id);            
+       $allImages = $image->getAllImagesByProductId($id);            
      
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
@@ -310,7 +342,7 @@ class Admin_ProductsController extends Zend_Controller_Action
                 
                 foreach ($allImageToPage as $key) {
                     
-                    $imageToPage->delete($key->getId());
+                    $imageToProduct->delete($key->getId());
                     
                 }
                 
@@ -319,27 +351,24 @@ class Admin_ProductsController extends Zend_Controller_Action
                     $image->delete($key->getId());
                 }
                 
-                $page->delete($id);
+                $product->delete($id);
                 
-                $page->deleteFolder($id,'products');
+                $product->deleteFolder($id);
                 
                 $successMessage = "Product successfully deleted.";
                 
                 $this->_helper->FlashMessenger->addMessage($successMessage, 'actions'); 
                 
-                $this->redirect('admin/pages/index');
+                $this->redirect('admin/products/index');
                 } else {
-                $this->redirect('admin/pages/index');
+                $this->redirect('admin/products/index');
                 }       
           
         }
         }
         
         $this->view->form = $form;
-        } else {
-          $errorMessage = 'Invalid id parameter';
-          $this->view->errorMessage = $errorMessage;  
-        }
+        
         
     }
         

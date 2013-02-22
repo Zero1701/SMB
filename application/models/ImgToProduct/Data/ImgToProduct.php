@@ -123,11 +123,11 @@ class Application_Model_ImgToProduct_Data_ImgToProduct extends Application_Model
                     return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'image_id');
                 }
                 
-                public function getAllByPageId($id) {
+                public function getAllByProductId($id) {
                     
                     $map = new Application_Model_DbMapper_DbMapper();
                     
-                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'page_id');
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'product_id');
                 }
                  
 }

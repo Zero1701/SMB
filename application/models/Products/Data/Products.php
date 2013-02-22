@@ -246,6 +246,13 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
                  return true;
                 }
 				
-                 
+                public function deleteFolder($id){
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\products\\' . $id . '\\');
+                    
+                    return $map->deleteAll($folderPath);
+                }
 }
 

@@ -376,7 +376,7 @@ class Admin_PagesController extends Zend_Controller_Action
                 
                 $page->delete($id);
                 
-                $page->deleteFolder($id,'pages');
+                $page->deleteFolder($id);
                 
                 $successMessage = "Page successfully deleted.";
                 
