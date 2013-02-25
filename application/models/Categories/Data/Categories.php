@@ -148,7 +148,25 @@ class Application_Model_Categories_Data_Categories extends Application_Model_Abs
                 
                 //-----------------------------------------------
             
-                 public function save($data){
+                 public function getLatest($limit){
+                    
+                      $map = new Application_Model_DbMapper_DbMapper();
+		
+                      return $map->fetchLast($this->_tableName, $this->_class, $limit);
+                
+                }
+                
+                public function getAllPaginator($page = 1){
+                
+                	$map = new Application_Model_DbMapper_DbMapper();
+                
+                	return $map->fetchAllPaginator($this->_tableName, $this->_class, $page);
+                
+                }
+                
+                
+                
+                public function save($data){
 		
                     $map = new Application_Model_DbMapper_DbMapper();
 		
@@ -183,6 +201,8 @@ class Application_Model_Categories_Data_Categories extends Application_Model_Abs
 	        
                 
                 }
+                
+                
                  
 }
 

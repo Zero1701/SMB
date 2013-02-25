@@ -397,6 +397,32 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
+      public function fetchAllInnerJoin($table_name, $table_name2,$primaryId,$foreignId,$selectFromTable,$selectFromTable2,$class_name){
+        
+        $dbtable1 = $this->getDbTable($table_name);    
+        $select = $dbtable1->select();
+    	$select->setIntegrityCheck(false)
+               ->from($table_name,$selectFromTable)
+               ->join($table_name2, $table_name . '.' . $primaryId . ' = ' . $table_name2 . '.' . $foreignId ,$selectFromTable2);
+        
+        
+      
+        $result=$this->getDbTable($table_name)->fetchAll($select);
+         
+        $entries=array();
+
+        foreach($result as $row){
+            $entry = new $class_name();
+
+            $entry->setOptions($row->toArray());
+
+            $entries[] = $entry;
+        }
+
+        return $entries;
+
+    }
+    
     public function fetchAllInnerJoinId($id,$table_name,$table_name2,$foreignId,$sortName,$sort,$class_name,$whereClause,$selectFromTable,$selectFromTable2){
         
         $dbtable1 = $this->getDbTable($table_name);    

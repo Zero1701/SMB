@@ -13,6 +13,7 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
     		protected $_editedon;
     		protected $_status;
     		protected $_lang;
+                protected $_iso;
     			
     			
                 protected $_tableName = 'products';
@@ -132,12 +133,31 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
                     return $this->_lang;
                 }
                 
+                public function setIso($iso)
+                {
+                    $this ->_iso = (string) $iso;
+                    return $this;
+                }
+        
+                public function getIso()
+                {
+                    return $this->_iso;
+      
+                }
                //----------------------------------------------------------------- 
                 public function getLatest($limit){
                     
 		$map = new Application_Model_DbMapper_DbMapper();
 		
 		return $map->fetchLast($this->_tableName, $this->_class, $limit);
+                
+                }
+                
+                public function getAllProducts(){
+                    
+		$map = new Application_Model_DbMapper_DbMapper();
+		
+		return $map->fetchAllInnerJoin($this->_tableName, 'lang', 'lang', 'id','*','iso', $this->_class);
                 
                 }
                 

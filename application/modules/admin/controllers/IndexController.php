@@ -26,7 +26,7 @@ class Admin_IndexController extends Zend_Controller_Action
         
         $products = new Application_Model_Products_Data_Products();
         $latestProducts = $products->getLatest(5);
-        $this->view->latestPproducts = $latestProducts;
+        $this->view->latestProducts = $latestProducts;
          
         $articles = new Application_Model_Articles_Data_Articles();
         $latestArticles = $articles->getLatest(5);
@@ -36,6 +36,9 @@ class Admin_IndexController extends Zend_Controller_Action
         $latestPages = $pages->getLatest(5);
         $this->view->latestPages = $latestPages;
          
+        $categories = new Application_Model_Categories_Data_Categories();
+        $latestCategories = $categories->getLatest(5);
+        $this->view->latestCategories = $latestCategories;
        
         $this->view->addScriptPath('/application/views/scripts');
 		$this->view->render('sidebar.phtml');

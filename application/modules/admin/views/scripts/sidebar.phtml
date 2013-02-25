@@ -28,5 +28,14 @@
 	      <?php } ?>
 	</ul>
 	<?php } ?>
+
+        <?php if($this->latestCategories) {  ?>
+<div class = "block-title"><h3>Categories</h3></div>
+        <ul>
+         <?php foreach($this->latestCategories as $key => $val){ ?>
+	<li><p>Title: <?php echo $val->getTitle(); ?></p></li>
+               <?php } ?>
+	</ul>
+	<?php } ?>
 	
 <?php $this->placeholder('sidebar')->captureEnd(); ?>
