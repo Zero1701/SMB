@@ -30,16 +30,11 @@ class Admin_CategoriesController extends Zend_Controller_Action
         if(!Zend_Auth::getInstance()->hasIdentity()){
             $this->redirect('admin/index/login');
         }
-        
-        $request = $this->getRequest();
-        $user = trim(Zend_Auth::getInstance()->getIdentity()->id);
-        
-        
-        
+
         $editForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
         $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/deletepage','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/deletecategory','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $this->view->deleteForm = $deleteForm;
         
         $upForm = new Admin_Form_EditDelete(array('action' => '#','method' => 'post','id' => 'up','class' => 'up','name' => 'up','submitLabel' => '+' ));
@@ -79,8 +74,7 @@ class Admin_CategoriesController extends Zend_Controller_Action
         }
         
         $form = new Admin_Form_Category();
-        $categories = new Application_Model_Categories_Data_Categories();
-        $img = new Application_Model_Images_Data_Images();
+        $categories = new Application_Model_Categories_Data_Categories();   
         $categoryToProduct = new Application_Model_CategoryToProduct_Data_CategoryToProduct();
       
         $request = $this->getRequest();
@@ -128,7 +122,7 @@ class Admin_CategoriesController extends Zend_Controller_Action
        $lastImgId = $categories->saveImg($lastCategoryId, true, $user);
        
        if(isset($lastImgId) && !empty($lastImgId)){
-       $categories->save(array('id' => $lastCategoryId,'image_id' =>$lastImgId));
+       $categories->save(array('id' => $lastCategoryId,'image_id' => $lastImgId));
         }
        
         $successMessage = "Category successfully created.";        
@@ -163,8 +157,9 @@ class Admin_CategoriesController extends Zend_Controller_Action
         {
             
         $form = new Admin_Form_Category();
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/deleteimage', 'method' => 'get', 'id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
+        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/deleteimage', 'method' => 'get', 'id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
         $categories = new Application_Model_Categories_Data_Categories();
+        $categoryToProduct = new Application_Model_CategoryToProduct_Data_CategoryToProduct();
         $products = new Application_Model_Products_Data_Products();
         $row = $categories->getRowById($id);
         if($row)
@@ -191,31 +186,64 @@ class Admin_CategoriesController extends Zend_Controller_Action
         
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
-        $categoryData = array();
-     
-        
+        $data = array();
+       
         
         $user = trim(Zend_Auth::getInstance()->getIdentity()->id);
-        $categoryData['id'] = $id;
-        $categoryData['title'] = trim($requestParams['title']);
-        $categoryData['short_desc'] = trim($requestParams['short']);
-        $categoryData['description'] = trim($requestParams['description']);
-        $categoryData['createdby'] = $user;
-        $categoryData['editedby'] = $user;
-        $categoryData['createdon'] = new Zend_Db_Expr('NOW()');
-        $categoryData['editedon'] = new Zend_Db_Expr('NOW()');
-        $categoryData['status'] = trim($requestParams['status']);
-        $categoryData['lang'] = trim($requestParams['language']);
-      
-      
-       
-        //$pages->save($pageData);
-       
-        //$pages->saveImg($id, true, $user);
+        $data['id'] = $id;
+        $data['title'] = trim($requestParams['title']);
+        $data['short_desc'] = trim($requestParams['short']);
+        $data['description'] = trim($requestParams['description']);
+        $data['createdby'] = $user;
+        $data['editedby'] = $user;
+        $data['createdon'] = new Zend_Db_Expr('NOW()');
+        $data['editedon'] = new Zend_Db_Expr('NOW()');
+        $data['status'] = trim($requestParams['status']);
+        $data['lang'] = trim($requestParams['language']);
         
+        $categories->save($data);
+        
+        
+        $lastCategoryId = $id;
+       
+        if($this->hasParam('products')){
+            $categoryToProduct->deleteCatToProd($lastCategoryId);
+            $catProd = array();
+            foreach ($requestParams['products'] as $key) {
+                $catProd['category_id'] = $lastCategoryId;
+                $catProd['product_id'] = $key;   
+                $catProd['createdby'] = $user;
+                $catProd['editedby'] = $user;
+                $catProd['createdon'] = new Zend_Db_Expr('NOW()');
+                $catProd['editedon'] = new Zend_Db_Expr('NOW()');
+                
+            $categoryToProduct->save($catProd);
+            }
+        } else {
+            $categoryToProduct->deleteCatToProd($lastCategoryId);
+               }
+        
+        $upload = new Zend_File_Transfer();
+        $files = $upload->getFileInfo();
+        $file = $files['file']['name'];
+   
+        if(isset($file) && !empty($file)){
+         if(isset($images) && !empty($images)){
+       $image->delete($row[0]->getImage_id());
+       $image->unlinkImage($id,$images[0]->getImg(),'categories');
+         }
+       $lastImgId = $categories->saveImg($lastCategoryId, true, $user);
+       
+       
+       if(isset($lastImgId) && !empty($lastImgId)){
+       $categories->save(array('id' => $lastCategoryId,'image_id' => $lastImgId));
+        }
+        $images = $image->getAllImagesByCategoryId($row[0]->getId());
+        
+        }
         $successMessage = "Category successfully edited.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
-        //$this->redirect('admin/categories');
+        $this->redirect('admin/categories');
           
         }
         }
@@ -259,17 +287,19 @@ class Admin_CategoriesController extends Zend_Controller_Action
         $form = new Admin_Form_Delete();
         $image = new Application_Model_Images_Data_Images();
         $row = $image->getRowById($id);
+      
         if($row)
      {
-       $imageToPage = new Application_Model_ImgToPage_Data_ImgToPage();
+       $categories = new Application_Model_Categories_Data_Categories();
        
-       $imageToPageRow = $imageToPage->getRowByImageId($id);
-       if(isset($imageToPageRow) && !empty($imageToPageRow))
+       $category = $categories->getRowByImageId($id);
+       
+       if(isset($category) && !empty($category))
        {
-       $imageToPageId = $imageToPageRow[0]->getId();
+       $imageId = $category[0]->getImage_id();
        }
        
-     if(isset($imageToPageId) && !empty($imageToPageId)){
+     if(isset($imageId) && !empty($imageId)){
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
           
@@ -277,16 +307,18 @@ class Admin_CategoriesController extends Zend_Controller_Action
             if ($del == 'Yes') {
                 
                 
-                $imageToPage->delete($imageToPageId);
-                $image->delete($id);
-                $image->unlinkImage($imageToPageRow[0]->getPage_id(),$row[0]->getImg(),'pages');
                 
-                $successMessage = "Article successfully deleted.";        
+                $image->delete($id);
+                $image->unlinkImage($category[0]->getId(),$row[0]->getImg(),'categories');
+                
+                $categories->save(array('id' => $category[0]->getId(), 'image_id' => new Zend_Db_Expr('NULL')));
+                
+                $successMessage = "Image successfully deleted.";        
                 $this->_helper->FlashMessenger->addMessage($successMessage, 'actions'); 
                 
-                $this->redirect('admin/pages/edit/id/' . $imageToPageRow[0]->getPage_id());
+               $this->redirect('admin/categories/edit/id/' . $category[0]->getId());
                 } else {
-                $this->redirect('admin/pages/edit/id/' . $imageToPageRow[0]->getPage_id());
+               $this->redirect('admin/categories/edit/id/' . $category[0]->getId());
                 }       
           
         }
@@ -294,7 +326,7 @@ class Admin_CategoriesController extends Zend_Controller_Action
         
         $this->view->form = $form;
         } else {
-          $errorMessage = 'This image is not linked to this product';
+          $errorMessage = 'This image is not linked to this category';
           $this->view->errorMessage = $errorMessage;  
         }
         
@@ -305,7 +337,8 @@ class Admin_CategoriesController extends Zend_Controller_Action
         }  
     }
     
-    public function deletepageAction() {
+    public function deletecategoryAction() {
+        
         
         $this->mergeQueryString();
          if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -328,17 +361,43 @@ class Admin_CategoriesController extends Zend_Controller_Action
         {
             
         $form = new Admin_Form_Delete();
-        $page = new Application_Model_Pages_Data_Pages();
-        $row = $page->getRowById($id);
-        if($row)
+        $categories = new Application_Model_Categories_Data_Categories();
+        $row = $categories->getRowById($id);
+          if(!isset($row) && empty($row))
      {
+          $errorMessage = 'Invalid id parameter';
+          $this->view->errorMessage = $errorMessage;
+          return false;
+     }
+     
+     $rowId = $row[0]->getId();
+     
+     $products = new Application_Model_Products_Data_Products();
+     
+    $product = $products->getAllProductByCategoryId($rowId);
+        
+    
+    if(isset($product) && !empty($product)){ 
+          
+                $productName = '';
+                foreach ($product as $key2) {
+                $productName .= $key2->getName();
+                $productName .= ', ';
+                } 
+               
+          $errorMessage = 'This category cannot be deleted because the following products are bound to it: ' . rtrim($productName, ', ');
+          $this->view->errorMessage = $errorMessage;
+          return false;
+          
+          }
        $image = new Application_Model_Images_Data_Images();     
-            
-       $imageToPage = new Application_Model_ImgToPage_Data_ImgToPage();
        
-       $allImageToPage = $imageToPage->getAllByPageId($id);
+       $categoryToProduct = new Application_Model_CategoryToProduct_Data_CategoryToProduct();
        
-       $allImages = $image->getAllImagesByPageId($id);            
+       $prodCat = $categoryToProduct->getAllByCategoryId($id);
+     
+       $allImages = $image->getAllImagesByCategoryId($id); 
+    
      
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
@@ -346,38 +405,35 @@ class Admin_CategoriesController extends Zend_Controller_Action
             $del = $request->getParam('del');
             if ($del == 'Yes') {
                 
-                foreach ($allImageToPage as $key) {
-                    
-                    $imageToPage->delete($key->getId());
-                    
-                }
-                
                 foreach ($allImages as $key) {
                     
                     $image->delete($key->getId());
+                    
                 }
                 
-                $page->delete($id);
+                foreach ($prodCat as $key) {
+                    
+                    $categoryToProduct->delete($key->getId());
+                }
                 
-                $page->deleteFolder($id);
+                $categories->delete($id);
                 
-                $successMessage = "Page successfully deleted.";
+                $categories->deleteFolder($id);
+                
+                $successMessage = "Category successfully deleted.";
                 
                 $this->_helper->FlashMessenger->addMessage($successMessage, 'actions'); 
                 
-                $this->redirect('admin/pages/index');
+                $this->redirect('admin/categories');
                 } else {
-                $this->redirect('admin/pages/index');
+                $this->redirect('admin/categories');
                 }       
           
         }
         }
         
         $this->view->form = $form;
-        } else {
-          $errorMessage = 'Invalid id parameter';
-          $this->view->errorMessage = $errorMessage;  
-        }
+        
         
     }
         

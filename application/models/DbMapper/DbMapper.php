@@ -138,7 +138,7 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
         $select = $this->getDbTable($table_name)
                 ->select()->setIntegrityCheck(false)->from($table_name)
                 ->where($column_name . ' = ?', $value);
-     
+   
         $result=$this->getDbTable($table_name)->fetchAll($select);
         
       

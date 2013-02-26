@@ -139,6 +139,13 @@ class Application_Model_CategoryToProduct_Data_CategoryToProduct extends Applica
                     
                     return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'page_id');
                 }
+                
+                public function getAllByCategoryId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'category_id');
+                }
                  
 }
 

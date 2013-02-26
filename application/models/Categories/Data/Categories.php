@@ -254,7 +254,21 @@ class Application_Model_Categories_Data_Categories extends Application_Model_Abs
                  return $lastid;
                 }
                 
+              public function getRowByImageId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'image_id');
+                }  
                 
-                 
+                public function deleteFolder($id){
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\categories\\' . $id . '\\');
+                    
+                    return $map->deleteAll($folderPath);
+                }
+                
 }
 

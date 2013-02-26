@@ -38,7 +38,7 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
       
                 }
                 
-				public function setStatus($Status)
+		public function setStatus($status)
                 {
                     $this ->_status = (boolean) $status;
                     return $this;
@@ -145,8 +145,7 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                 public function unlinkImage($id,$name,$imgSubFolder) {
                    
                     $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\' . $imgSubFolder . '\\' . $id . '\\';
-                    
-                    
+               
                     unlink($path . $name);
                     
                     return true;
