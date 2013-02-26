@@ -40,16 +40,65 @@
 			<uri>/admin/pages</uri>
 			<class>page</class>
 		</pages>
-                <categories>
-			<label>Categories</label>
-			<uri>/admin/categories</uri>
-			<class>category</class>
-		</categories>
-                 <products>
-			<label>Products</label>
-			<uri>/admin/products</uri>
-			<class>product</class>
-		</products>
+		<store>
+			<label>Store</label>
+				<uri>/admin/store</uri>
+				<class>store</class>
+			<pages>
+				<categories>
+				<label>Categories</label>
+				<uri>/admin/categories</uri>
+				<class>category</class>
+				
+					<pages>
+						<cat_new>
+							<label>Add new category</label>
+							<uri>/admin/categories/new</uri>
+							<class>cat-new</class>
+						</cat_new>
+				
+						<cat_all>
+							<label>All Categories</label>
+							<uri>/admin/categories</uri>
+							<class>cats</class>
+						</cat_all>
+				
+						<cats_feat>
+							<label>Featured categories</label>
+							<uri>/admin/categories/featured</uri>
+							<class>cat-feat</class>
+						</cats_feat>
+				
+				</pages>
+        	
+			</categories>
+         	<products>
+				<label>Products</label>
+				<uri>/admin/products</uri>
+				<class>product</class>
+				<pages>
+						<prod_new>
+							<label>Add new product</label>
+							<uri>/admin/products/new</uri>
+							<class>prod-new</class>
+						</prod_new>
+				
+						<prod_all>
+							<label>All Products</label>
+							<uri>/admin/products</uri>
+							<class>prods</class>
+						</prod_all>
+				
+						<prods_feat>
+							<label>Featured products</label>
+							<uri>/admin/products/featured</uri>
+							<class>prod-feat</class>
+						</prods_feat>
+				
+				</pages>
+			</products>
+			</pages>
+		</store>
 		<gallery>
 			<label>Gallery</label>
 			<uri>/admin/gallery</uri>
