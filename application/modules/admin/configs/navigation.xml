@@ -11,6 +11,7 @@
 			<label>Articles</label>
 			<uri>/admin/articles</uri>
 			<class>article</class>
+			<resource>nav-article</resource>
 			<pages>
 				
 				<articles_new>
