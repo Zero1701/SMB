@@ -103,6 +103,54 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
 	        
                 
                 }
+                
+                public function getAllImagesByPageId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'imgtopage', 'image', $this->_tableName . '.id', 'asc', $this->_class,'imgtopage.page_id','*',null);
+                }
+                
+                public function getAllImagesByCategoryId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categories', 'image', $this->_tableName . '.id', 'asc', $this->_class,'categories.id','*',null);
+                }
+                
+                 public function getAllImagesByProductId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'imgtoproduct', 'image', $this->_tableName . '.id', 'asc', $this->_class,'imgtoproduct.product_id','*',null);
+                }
+                
+                 public function getRowById($id){
+                      
+                    $map = new Application_Model_DbMapper_DbMapper();
+                 
+                    return $map->fetchRowById($id, $this->_tableName, $this);
+                    
+                }
+                
+                public function delete($id){
+		
+                    $map = new Application_Model_DbMapper_DbMapper();
+		
+                    return $map->delete($id, $this->_tableName);
+	        
+                
+                }
+                
+                public function unlinkImage($id,$name,$imgSubFolder) {
+                   
+                    $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\' . $imgSubFolder . '\\' . $id . '\\';
+                    
+                    
+                    unlink($path . $name);
+                    
+                    return true;
+                }
                  
 }
 

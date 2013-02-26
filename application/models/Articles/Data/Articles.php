@@ -7,7 +7,8 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                 protected $_title;
                 protected $_date;
     		protected $_description;
-    		protected $_status;
+                protected $_featured;
+                protected $_status;
     		protected $_createdby;
     		protected $_editedby;
 		protected $_createdon;
@@ -64,6 +65,17 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                 {
                     return $this->_description;
       
+                }
+                
+                public function setFeatured($featured)
+                {
+                    $this ->_featured = (boolean) $featured;
+                    return $this;
+                }
+        
+                public function getFeatured()
+                {
+                    return $this->_featured;
                 }
                 
 		public function setStatus($status)
@@ -149,6 +161,14 @@ class Application_Model_Articles_Data_Articles extends Application_Model_Abstrac
                 	$map = new Application_Model_DbMapper_DbMapper();
                 
                 	return $map->fetchAllPaginator($this->_tableName, $this->_class, $page);
+                
+                }
+                
+                public function getAllFeaturedArticlesPaginator($page = 1){
+                
+                	$map = new Application_Model_DbMapper_DbMapper();
+                
+                	return $map->fetchAllWhereColumnValueIsPaginator($this->_tableName, $this->_class,'featured',1, $page);
                 
                 }
                 

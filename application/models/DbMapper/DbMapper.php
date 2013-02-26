@@ -65,6 +65,30 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
+    public function fetchAllWhereColumnValueIsPaginator($table_name, $class_name,$column,$value,$page = null){
+        $result=$this->getDbTable($table_name)->fetchAll($this->_dbtable->select()
+                                                        ->where($column . ' = ?', $value));
+
+        $entries=array();
+
+        foreach($result as $row){
+            $entry = new $class_name();
+
+            $entry->setOptions($row->toArray());
+
+            $entries[] = $entry;
+        }
+
+        $paginationCount = 3;
+        $pageRange = 5;
+        $paginator = new Zend_Paginator(new Zend_Paginator_Adapter_Array($entries));
+        $paginator->setItemCountPerPage($paginationCount);
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setPageRange($pageRange);
+        return $paginator;
+
+    }
+    
         public function fetchLast($table_name, $class_name,$limit){
         $result=$this->getDbTable($table_name)->fetchAll($this->_dbtable->select()
                                                         ->where('status = 1')
@@ -114,6 +138,7 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
         $select = $this->getDbTable($table_name)
                 ->select()->setIntegrityCheck(false)->from($table_name)
                 ->where($column_name . ' = ?', $value);
+     
         $result=$this->getDbTable($table_name)->fetchAll($select);
         
       
@@ -222,9 +247,17 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
        
         }
         
-        public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function deleteByColumnName($table_name,$columnName,$value){
+       
+                $where = $this->getDbTable($table_name)->getAdapter()->quoteInto($columnName . ' = ?', $value);
+                $result = $this->getDbTable($table_name)->delete($where);
+                return $result;
+       
+        }
+        
+        public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2) {
             
-         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
+         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2);
          $currentPageId = $currentSort[0]->getId();
          
          $navigation = $this->fetchAllByColumnName('navigation', 'Application_Model_Navigation_Data_Navigation', $currentPageId, 'page_id');
@@ -270,9 +303,9 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
             
         }
         
-        public function SortDOWN($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name) {
+        public function SortDOWN($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2) {
             
-         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name);
+         $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2);
          
          $currentPageId = $currentSort[0]->getId();
          
@@ -345,7 +378,9 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
     	$select->setIntegrityCheck(false)
                ->from($table_name)
                ->join($table_name2, $table_name.'.id = ' . $table_name2 . '.' . $foreignId . '_id' , null)
+               ->order($table_name . '.lang asc')
                ->order($table_name2 . '.' . $sortName . ' ' . $sort);
+        
         
              
         $result=$this->getDbTable($table_name)->fetchAll($select);
@@ -370,17 +405,43 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
 
     }
     
-    public function fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name){
+      public function fetchAllInnerJoin($table_name, $table_name2,$primaryId,$foreignId,$selectFromTable,$selectFromTable2,$class_name){
         
         $dbtable1 = $this->getDbTable($table_name);    
         $select = $dbtable1->select();
     	$select->setIntegrityCheck(false)
-               ->from($table_name,'*')
-               ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id', 'sort')
-               ->where($table_name . '.id = ?', $id)
+               ->from($table_name,$selectFromTable)
+               ->join($table_name2, $table_name . '.' . $primaryId . ' = ' . $table_name2 . '.' . $foreignId ,$selectFromTable2);
+        
+        
+      
+        $result=$this->getDbTable($table_name)->fetchAll($select);
+         
+        $entries=array();
+
+        foreach($result as $row){
+            $entry = new $class_name();
+
+            $entry->setOptions($row->toArray());
+
+            $entries[] = $entry;
+        }
+
+        return $entries;
+
+    }
+    
+    public function fetchAllInnerJoinId($id,$table_name,$table_name2,$foreignId,$sortName,$sort,$class_name,$whereClause,$selectFromTable,$selectFromTable2){
+        
+        $dbtable1 = $this->getDbTable($table_name);    
+        $select = $dbtable1->select();
+    	$select->setIntegrityCheck(false)
+               ->from($table_name,$selectFromTable)
+               ->joinInner($table_name2, $table_name . '.id = ' . $table_name2 . '.' . $foreignId . '_id',$selectFromTable2)
+               ->where($whereClause . ' = ?', $id)
                ->order($sortName . ' ' . $sort);
            
-        
+        //echo $select->__toString();
         $result=$this->getDbTable($table_name)->fetchAll($select);
        
         $entries=array();
@@ -436,7 +497,44 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
         return $entries;
 
     }
+               
+               
     
+        public function deleteAll($directory, $empty = false) {
+            if(substr($directory,-1) == "/") {
+                $directory = substr($directory,0,-1);
+            }
 
+            if(!file_exists($directory) || !is_dir($directory)) {
+                return false;
+            } elseif(!is_readable($directory)) {
+                return false;
+            } else {
+            
+                $directoryHandle = opendir($directory);
+       
+                while ($contents = readdir($directoryHandle)) {
+                    if($contents != '.' && $contents != '..') {
+                        $path = $directory . "/" . $contents;
+               
+                            if(is_dir($path)) {
+                                $this->deleteAll($path);
+                                    } else {
+                                   unlink($path);
+                                    }
+                    }
+                }
+       
+                    closedir($directoryHandle);
+
+                    if($empty == false) {
+                        if(!rmdir($directory)) {
+                            return false;
+                        }
+                    }
+       
+                        return true;
+            }
+        }
 
 }

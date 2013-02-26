@@ -4,7 +4,6 @@ class Application_Model_ImgToPage_Data_ImgToPage extends Application_Model_Abstr
 {
 
                 protected $_id;
-                protected $_title;
                 protected $_page_id;
                 protected $_image_id;
     		protected $_createdby;
@@ -114,6 +113,20 @@ class Application_Model_ImgToPage_Data_ImgToPage extends Application_Model_Abstr
                     return $map->delete($id, $this->_tableName);
 	        
                 
+                }
+                
+                public function getRowByImageId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'image_id');
+                }
+                
+                public function getAllByPageId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'page_id');
                 }
                  
 }

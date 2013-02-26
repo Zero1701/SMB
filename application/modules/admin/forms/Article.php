@@ -34,6 +34,13 @@ class Admin_Form_Article extends Zend_Form
                  ->removeDecorator('htmlTag')
                  ->addMultiOptions($languages);
         
+        $featured = new Zend_Form_Element_Select('featured');
+        $featured->removeDecorator('label')
+                 ->removeDecorator('DtDdWrapper')
+                 ->setAttrib('class', 'field')
+                 ->removeDecorator('htmlTag')
+                 ->addMultiOptions(array(0 => 'No',1 => 'Yes'));
+        
         $status = new Zend_Form_Element_Select('status');
         $status->removeDecorator('label')
                ->removeDecorator('DtDdWrapper')
@@ -85,7 +92,7 @@ class Admin_Form_Article extends Zend_Form
                   ->setIgnore(true);
                 
            
-        $this->addElements(array($title,$language,$status,$datepicker,$description,$submit));
+        $this->addElements(array($title,$language,$featured,$status,$datepicker,$description,$submit));
         $this->setDecorators(array(array('ViewScript', array('viewScript' =>'articles/article_form.phtml'))));
      
         

@@ -12,7 +12,8 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
 		protected $_createdon;
     		protected $_editedon;
     		protected $_status;
-    		protected $_images_id;
+    		protected $_lang;
+                protected $_iso;
     			
     			
                 protected $_tableName = 'products';
@@ -121,17 +122,28 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
                     return $this->_status;
                 }
                 
- 				public function setImages_id($images_id)
+                 public function setLang($lang)
                 {
-                    $this ->_images_id = (int) $images_id;
+                    $this ->_lang = (string) $lang;
                     return $this;
                 }
         
-                public function getImages_id()
+                public function getLang()
                 {
-                    return $this->_images_id;
+                    return $this->_lang;
                 }
                 
+                public function setIso($iso)
+                {
+                    $this ->_iso = (string) $iso;
+                    return $this;
+                }
+        
+                public function getIso()
+                {
+                    return $this->_iso;
+      
+                }
                //----------------------------------------------------------------- 
                 public function getLatest($limit){
                     
@@ -140,7 +152,136 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
 		return $map->fetchLast($this->_tableName, $this->_class, $limit);
                 
                 }
-				
+                
+                public function getAllProducts(){
+                    
+		$map = new Application_Model_DbMapper_DbMapper();
+		
+		return $map->fetchAllInnerJoin($this->_tableName, 'lang', 'lang', 'id','*','iso', $this->_class);
+                
+                }
+                
+                public function getAllProductByCategoryId($id){
+                      
+                  
+                    $map = new Application_Model_DbMapper_DbMapper();
                  
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categorytoproduct', 'product', $this->_tableName . '.id', 'asc', $this->_class, 'categorytoproduct.category_id', '*', null);
+                    
+                }
+                
+                 public function getAllPaginator($page = 1){
+                
+                	$map = new Application_Model_DbMapper_DbMapper();
+                
+                	return $map->fetchAllPaginator($this->_tableName, $this->_class, $page);
+                
+                }
+                
+                public function getRowById($id){
+                      
+                  
+                    $map = new Application_Model_DbMapper_DbMapper();
+                 
+                    return $map->fetchRowById($id, $this->_tableName, $this);
+                    
+                }
+                
+                 public function save($data){
+		
+                    $map = new Application_Model_DbMapper_DbMapper();
+		
+                    return $map->save($data, $this->_tableName);
+	        
+                
+                }
+                
+                public function delete($id){
+		
+                    $map = new Application_Model_DbMapper_DbMapper();
+		
+                    return $map->delete($id, $this->_tableName);
+	        
+                
+                }
+                
+                public function saveImg($id,$new,$userid,$imgId = null){
+                      
+                    
+                $adapter = new Zend_File_Transfer_Adapter_Http();
+                $files = $adapter->getFileInfo();
+                $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\products\\' . $id . '\\';
+                $path2 = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\products\\' . $id;
+              
+                $image = new Application_Model_Images_Data_Images();
+                $ImgToProduct = new Application_Model_ImgToProduct_Data_ImgToProduct();
+                
+                if(!is_dir($path2)){ mkdir($path2,0755,true); }
+                
+                $adapter->setDestination($path);
+                foreach($files as $fieldname=>$fileinfo)
+                    {
+                    if (($adapter->isUploaded($fileinfo['name']))&& ($adapter->isValid($fileinfo['name'])))
+                        {
+                            $data = array();
+                            $data2 = array();
+                            $adapter->receive($fileinfo['name']);
+                            
+                            if($new == true){
+                                
+                            $data['img'] = $fileinfo['name'];
+                            $data['createdby'] = $userid;
+                            $data['editedby'] = $userid;
+                            $data['createdon'] = new Zend_Db_Expr('NOW()');
+                            $data['editedon'] = new Zend_Db_Expr('NOW()');
+                            $lastid = $image->save($data);
+                            
+                            unset($data);
+                            
+                            $data2['product_id'] = $id;
+                            $data2['image_id'] = $lastid;
+                            $data2['createdby'] = $userid;
+                            $data2['editedby'] = $userid;
+                            $data2['createdon'] = new Zend_Db_Expr('NOW()');
+                            $data2['editedon'] = new Zend_Db_Expr('NOW()');
+                            $ImgToProduct->save($data2);
+                            
+                            unset($data2);
+                            
+                            }else{
+                                
+                            $data['id'] = $imgId;
+                            $data['img'] = $fieldname['name'];
+                            $data['editedby'] = $userid;
+                            $data['editedon'] = new Zend_Db_Expr('NOW()'); 
+                            $lastid = $image->save($data);
+                            
+                            unset($data);
+                            
+                            $data2['id'] = $imgId;
+                            $data2['product_id'] = $id;
+                            $data2['image_id'] = $lastid;
+                            $data2['editedby'] = $userid;
+                            $data2['editedon'] = new Zend_Db_Expr('NOW()');
+                            $ImgToProduct->save($data2);
+                            
+                            unset($data2);
+                            
+                            }
+                            
+                          
+                        }
+                    }
+                 return true;
+                }
+				
+                public function deleteFolder($id){
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    $folderPath = realpath(APPLICATION_PATH . '\\..\\Public\\images\\products\\' . $id . '\\');
+                    
+                    return $map->deleteAll($folderPath);
+                }
 }
 

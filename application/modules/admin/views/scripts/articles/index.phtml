@@ -8,6 +8,7 @@
         <tr>
             <td>Title</td>
             <td>Date</td>
+            <td>Featured article</td>
             <td>Status</td>
             <td>Created by</td>
             <td>Language</td>
@@ -20,6 +21,7 @@
         <tr>
             <td><?php echo $this->escape($key->getTitle()); ?></td>
             <td><?php $date = new Zend_Date(strtotime($this->escape($key->getDate())), false, 'en'); echo $this->escape($date->toString()); ?></td>
+            <td><?php if($this->escape($key->getFeatured()) == 1) { echo 'Yes'; } else { echo 'No'; } ?></td>
             <td><?php if($this->escape($key->getStatus()) == 1) { echo 'Enabled'; } else { echo 'Disabled'; } ?></td>
             <td><?php $userData = $this->userData->getRowById($key->getCreatedby()); echo $this->escape($userData[0]->getName()) . ' ' . $this->escape($userData[0]->getLastname()); ?></td>
             <td><?php $lang = $this->lang->getRowById($key->getLang()); echo $this->escape($lang[0]->getLang()); ?></td>
@@ -43,7 +45,7 @@ echo $this->paginationControl($this->articles,'Sliding', 'pagination.phtml');
 $('#delete').submit(function() {
 var id = $(this).find("input:hidden").val();
 
-	   var answer = confirm("Are you sure you want to delete this article?")
+	   var answer = confirm("Are you sure you want to delete this article?");
 if (answer){	
 
         

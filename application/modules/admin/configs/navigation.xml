@@ -27,7 +27,7 @@
 				
 				<articles_feat>
 					<label>Featured articles</label>
-					<uri>/admin/articles</uri>
+					<uri>/admin/articles/featured</uri>
 					<class>art-feat</class>
 				</articles_feat>
 				
@@ -39,6 +39,16 @@
 			<uri>/admin/pages</uri>
 			<class>page</class>
 		</pages>
+                <categories>
+			<label>Categories</label>
+			<uri>/admin/categories</uri>
+			<class>category</class>
+		</categories>
+                 <products>
+			<label>Products</label>
+			<uri>/admin/products</uri>
+			<class>product</class>
+		</products>
 		<gallery>
 			<label>Gallery</label>
 			<uri>/admin/gallery</uri>
