@@ -93,7 +93,7 @@ class Admin_IndexController extends Zend_Controller_Action
         $this->view->forma = $forma;
     }
     
- public function logoutAction()
+ 	public function logoutAction()
     {
         $this->_helper->layout()->getView()->headTitle('Odjava');
         
@@ -103,11 +103,12 @@ class Admin_IndexController extends Zend_Controller_Action
     
      public function dashboardAction()
     {
-    if(!Zend_Auth::getInstance()->hasIdentity()){
+    	if(!Zend_Auth::getInstance()->hasIdentity()){
             $this->redirect('admin/index/login');
        
-    }
+    	}
          
+    	
     }
 
 

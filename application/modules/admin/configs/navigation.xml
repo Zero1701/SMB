@@ -39,6 +39,27 @@
 			<label>Pages</label>
 			<uri>/admin/pages</uri>
 			<class>page</class>
+			
+			<pages>
+						<page_new>
+							<label>Add new page</label>
+							<uri>/admin/pages/new</uri>
+							<class>prod-new</class>
+						</page_new>
+				
+						<page_all>
+							<label>All Pages</label>
+							<uri>/admin/pages</uri>
+							<class>prods</class>
+						</page_all>
+				
+						<prods_feat>
+							<label>Featured pages</label>
+							<uri>/admin/pages/featured</uri>
+							<class>prod-feat</class>
+						</prods_feat>
+				
+				</pages>
 		</pages>
 		<store>
 			<label>Store</label>
