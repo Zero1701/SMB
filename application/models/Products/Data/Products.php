@@ -161,6 +161,15 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
                 
                 }
                 
+                public function getAllProductByCategoryId($id){
+                      
+                  
+                    $map = new Application_Model_DbMapper_DbMapper();
+                 
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categorytoproduct', 'product', $this->_tableName . '.id', 'asc', $this->_class, 'categorytoproduct.category_id', '*', null);
+                    
+                }
+                
                  public function getAllPaginator($page = 1){
                 
                 	$map = new Application_Model_DbMapper_DbMapper();
@@ -250,7 +259,7 @@ class Application_Model_Products_Data_Products extends Application_Model_Abstrac
                             unset($data);
                             
                             $data2['id'] = $imgId;
-                            $data2['page_id'] = $id;
+                            $data2['product_id'] = $id;
                             $data2['image_id'] = $lastid;
                             $data2['editedby'] = $userid;
                             $data2['editedon'] = new Zend_Db_Expr('NOW()');

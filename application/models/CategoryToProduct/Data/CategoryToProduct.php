@@ -115,6 +115,17 @@ class Application_Model_CategoryToProduct_Data_CategoryToProduct extends Applica
                 
                 }
                 
+                 public function deleteCatToProd($id){
+		
+                    $map = new Application_Model_DbMapper_DbMapper();
+		
+                    return $map->deleteByColumnName($this->_tableName, 'category_id', $id);
+	        
+                
+                }
+              
+
+
                 public function getRowByImageId($id) {
                     
                     $map = new Application_Model_DbMapper_DbMapper();

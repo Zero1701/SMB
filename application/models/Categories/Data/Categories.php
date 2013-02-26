@@ -202,6 +202,58 @@ class Application_Model_Categories_Data_Categories extends Application_Model_Abs
                 
                 }
                 
+                public function saveImg($id,$new,$userid,$imgId = null){
+                      
+                    
+                $adapter = new Zend_File_Transfer_Adapter_Http();
+                $files = $adapter->getFileInfo();
+                $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\categories\\' . $id . '\\';
+                $path2 = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\categories\\' . $id;
+               
+                $image = new Application_Model_Images_Data_Images();
+               
+                
+                if(!is_dir($path2)){ mkdir($path2,0755,true); }
+                
+                $adapter->setDestination($path);
+                foreach($files as $fieldname=>$fileinfo)
+                    {
+                    if (($adapter->isUploaded($fileinfo['name']))&& ($adapter->isValid($fileinfo['name'])))
+                        {
+                            $data = array();
+                      
+                            $adapter->receive($fileinfo['name']);
+                            
+                            if($new == true){
+                                
+                            $data['img'] = $fileinfo['name'];
+                            $data['createdby'] = $userid;
+                            $data['editedby'] = $userid;
+                            $data['createdon'] = new Zend_Db_Expr('NOW()');
+                            $data['editedon'] = new Zend_Db_Expr('NOW()');
+                            $lastid = $image->save($data);
+                            
+                            unset($data);
+                       
+                            
+                            }else{
+                                
+                            $data['id'] = $imgId;
+                            $data['img'] = $fieldname['name'];
+                            $data['editedby'] = $userid;
+                            $data['editedon'] = new Zend_Db_Expr('NOW()'); 
+                            $lastid = $image->save($data);
+                            
+                            unset($data);
+                        
+                            }
+                            
+                          
+                        }
+                    }
+                 return $lastid;
+                }
+                
                 
                  
 }

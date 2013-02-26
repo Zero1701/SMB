@@ -80,7 +80,8 @@ class Admin_CategoriesController extends Zend_Controller_Action
         
         $form = new Admin_Form_Category();
         $categories = new Application_Model_Categories_Data_Categories();
-       
+        $img = new Application_Model_Images_Data_Images();
+        $categoryToProduct = new Application_Model_CategoryToProduct_Data_CategoryToProduct();
       
         $request = $this->getRequest();
         $requestParams = $this->getRequest()->getParams();
@@ -103,16 +104,36 @@ class Admin_CategoriesController extends Zend_Controller_Action
         $data['status'] = trim($requestParams['status']);
         $data['lang'] = trim($requestParams['language']);
         
-        print_r($data);
-        print_r($requestParams['products']);
-        //$lastCategoryId = $pages->save($data);
         
-        //$pages->saveImg($lastId, true, $user);
-     
+        
+        
+        $lastCategoryId = $categories->save($data);
        
-        $successMessage = "Page successfully created.";        
+        if($this->hasParam('products')){
+            $categoryToProduct->deleteCatToProd($lastCategoryId);
+            $catProd = array();
+            foreach ($requestParams['products'] as $key) {
+                $catProd['category_id'] = $lastCategoryId;
+                $catProd['product_id'] = $key;   
+                $catProd['createdby'] = $user;
+                $catProd['editedby'] = $user;
+                $catProd['createdon'] = new Zend_Db_Expr('NOW()');
+                $catProd['editedon'] = new Zend_Db_Expr('NOW()');
+                
+            $categoryToProduct->save($catProd);
+            }
+        }
+        
+        
+       $lastImgId = $categories->saveImg($lastCategoryId, true, $user);
+       
+       if(isset($lastImgId) && !empty($lastImgId)){
+       $categories->save(array('id' => $lastCategoryId,'image_id' =>$lastImgId));
+        }
+       
+        $successMessage = "Category successfully created.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
-        //$this->redirect('admin/pages/index');
+        $this->redirect('admin/categories');
         
         }
         }
@@ -141,65 +162,60 @@ class Admin_CategoriesController extends Zend_Controller_Action
         else
         {
             
-        $form = new Admin_Form_Page();
+        $form = new Admin_Form_Category();
         $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/pages/deleteimage', 'method' => 'get', 'id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
-        $pages = new Application_Model_Pages_Data_Pages();
-        $row = $pages->getRowById($id);
+        $categories = new Application_Model_Categories_Data_Categories();
+        $products = new Application_Model_Products_Data_Products();
+        $row = $categories->getRowById($id);
         if($row)
      {
-       
-       
-        
-        
-       $navigation = new Application_Model_Navigation_Data_Navigation();
-       
+       $allProducts = $products->getAllProductByCategoryId($id);
        $image = new Application_Model_Images_Data_Images();
-       $imagePath = '/images/pages/' . $id . '/';
-       $images = $image->getAllImagesByPageId($row[0]->getId());
+       $imagePath = '/images/categories/' . $id . '/';
+       $images = $image->getAllImagesByCategoryId($row[0]->getId());
        
        
-       $navRow = $navigation->getPageDataById($row[0]->getId());
-     
-  
-     
-        
         $form->getElement('title')->setValue((string) trim($row[0]->getTitle()));
         $form->getElement('language')->setValue((int) trim($row[0]->getLang()));
         $form->getElement('status')->setValue((int) trim($row[0]->getStatus()));
-        $form->getElement('header')->setValue((boolean) trim($navRow[0]->getInc_in_header()));
-        $form->getElement('footer')->setValue((boolean) trim($navRow[0]->getInc_in_footer()));
-        $form->getElement('content')->setValue((string) trim($row[0]->getContents()));
+        $form->getElement('short')->setValue((string) trim($row[0]->getShort_desc()));
+        $form->getElement('description')->setValue((string) trim($row[0]->getDescription()));
         
-     
+        if(isset($allProducts) && !empty($allProducts)){
+            $selectedProducts = array();
+            foreach ($allProducts as $key) {
+                array_push($selectedProducts, $key->getId());
+            }
+           $form->getElement('products')->setValue($selectedProducts);     
+        }
+        
         if($request->isPost()){
         if($form->isValid($this->_request->getPost())){
-        $pageData = array();
-        $navigationData = array();
+        $categoryData = array();
+     
         
         
         $user = trim(Zend_Auth::getInstance()->getIdentity()->id);
-        $pageData['id'] = $id;
-        $pageData['status'] = trim((int) $requestParams['status']);
-        $pageData['title'] = trim((string) $requestParams['title']);
-        $pageData['contents'] = trim((string) $requestParams['content']);
-        $pageData['editedby'] = $user;
-        $pageData['editedon'] = new Zend_Db_Expr('NOW()');
-        $pageData['lang'] = trim($requestParams['language']);
-        
-        $navigationData['id'] = trim($navRow[0]->getId());
-        $navigationData['inc_in_header'] = trim((int) $requestParams['header']);
-        $navigationData['inc_in_footer'] = trim((int) $requestParams['footer']);
-        $navigationData['editedby'] = $user;
-        $navigationData['editedon'] = new Zend_Db_Expr('NOW()');
+        $categoryData['id'] = $id;
+        $categoryData['title'] = trim($requestParams['title']);
+        $categoryData['short_desc'] = trim($requestParams['short']);
+        $categoryData['description'] = trim($requestParams['description']);
+        $categoryData['createdby'] = $user;
+        $categoryData['editedby'] = $user;
+        $categoryData['createdon'] = new Zend_Db_Expr('NOW()');
+        $categoryData['editedon'] = new Zend_Db_Expr('NOW()');
+        $categoryData['status'] = trim($requestParams['status']);
+        $categoryData['lang'] = trim($requestParams['language']);
+      
       
        
-        $pages->save($pageData);
-        $navigation->save($navigationData);
-        $pages->saveImg($id, true, $user);
+        //$pages->save($pageData);
+       
+        //$pages->saveImg($id, true, $user);
         
-        $successMessage = "Page successfully edited.";        
+        $successMessage = "Category successfully edited.";        
         $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');       
-        $this->redirect('admin/pages/index');
+        //$this->redirect('admin/categories');
           
         }
         }

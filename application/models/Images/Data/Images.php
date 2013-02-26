@@ -111,6 +111,13 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                     return $map->fetchAllInnerJoinId($id, $this->_tableName, 'imgtopage', 'image', $this->_tableName . '.id', 'asc', $this->_class,'imgtopage.page_id','*',null);
                 }
                 
+                public function getAllImagesByCategoryId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categories', 'image', $this->_tableName . '.id', 'asc', $this->_class,'categories.id','*',null);
+                }
+                
                  public function getAllImagesByProductId($id) {
                     
                     $map = new Application_Model_DbMapper_DbMapper();

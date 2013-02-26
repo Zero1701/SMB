@@ -247,6 +247,14 @@ class Application_Model_DbMapper_DbMapper extends Application_Model_Abstract_Abs
        
         }
         
+        public function deleteByColumnName($table_name,$columnName,$value){
+       
+                $where = $this->getDbTable($table_name)->getAdapter()->quoteInto($columnName . ' = ?', $value);
+                $result = $this->getDbTable($table_name)->delete($where);
+                return $result;
+       
+        }
+        
         public function SortUP($id,$userId,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2) {
             
          $currentSort = $this->fetchAllInnerJoinId($id,$table_name, $table_name2,$foreignId,$sortName,$sort, $class_name,$whereClause,$selectFromTable,$selectFromTable2);
