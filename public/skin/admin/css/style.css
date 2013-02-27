@@ -67,9 +67,9 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 .content form .fields { top:75px; }
 .content form label { float:left; width: 150px; }
 .content form input, .content form textarea { float: left; }
-.content form .submit { margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 100;}
-.content form .submit button { margin-top: 20px; float:left; margin-right: 10px; }
-.content form .submit h1 { float:left; margin-left: 10px; width: 60%; }
+.content form .submit-new { margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 100;}
+.content form .submit-new button { margin-top: 20px; float:left; margin-right: 10px; }
+.content form .submit-new h1 { float:left; margin-left: 10px; width: 60%; }
 
 /* dashboard */
 .dashboard, 

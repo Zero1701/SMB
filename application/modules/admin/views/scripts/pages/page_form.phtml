@@ -5,7 +5,15 @@
       class="<?php echo $this->escape($this->element->getAttrib('class'));?>"
       enctype="<?php echo $this->escape($this->element->getAttrib('enctype'));?>">
 
-    <div>
+      <div class="submit-new">
+      <h1>Add new Page</h1>
+    <?php echo $this->element->submitButton; ?>
+	</div>
+
+    
+    
+    <div class="fields">
+	<div>
     <label for="title">Title :</label>
     <?php echo $this->element->title;?>
     </div>
@@ -40,7 +48,5 @@
     <?php echo $this->element->file; ?>
     </div>
     
-<div class="submit">
-    <?php echo $this->element->submitButton; ?>
-</div>
+	</div>
 </form>
