@@ -1,3 +1,4 @@
+<div class="articles">
 <div id="message_box">
      <?php if(!empty($this->messages[0])) echo $this->messages[0]; ?>
 </div>
@@ -6,12 +7,12 @@
 <table>
     <thead>
         <tr>
-            <td>Title</td>
-            <td>Status</td>
-            <td>Created by</td>
-            <td>Up / Down</td>
-            <td>Language</td>
-            <td>Edit / Delete</td>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created by</th>
+            <th>Up / Down</th>
+            <th>Language</th>
+            <th>Edit / Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -34,12 +35,13 @@
     </tbody>
 </table>
 
+
 <?php 
 if($this->pageNum > 1){
 echo $this->paginationControl($this->pages,'Sliding', 'pagination.phtml'); 
 }?>
 
-
+</div>
 <script type = "text/javascript">
 
     var url='<?php echo $this->escape(Zend_Controller_Front::getInstance()->getBaseUrl());?>'+'/admin/pages/deletepage';

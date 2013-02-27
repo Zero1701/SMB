@@ -1,3 +1,4 @@
+<div class="articles">
 <div id="message_box">
      <?php if(!empty($this->messages[0])) echo $this->messages[0]; ?>
 </div>
@@ -6,12 +7,13 @@
 <table>
     <thead>
         <tr>
-            <td>Name</td>
-            <td>Status</td>
-            <td>Created by</td>
-            <td>Short description</td>
-            <td>Category</td>
-            <td>Edit / Delete</td>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Created by</th>
+            <th>Short description</th>
+            <th>Category</th>
+            <th>Language</th>
+            <th>Edit / Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -47,7 +49,7 @@ if($this->pageNum > 1){
 
 echo $this->paginationControl($this->products,'Sliding', 'pagination.phtml'); 
 }?>
-
+</div>
 
 <script type = "text/javascript">
 

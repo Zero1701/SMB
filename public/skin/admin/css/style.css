@@ -3,11 +3,14 @@
 html,body { margin: 0; padding: 0; }
 body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size: 14px; }
 
-.admin-wrapper { padding: 0; overflow: hidden; }
+.admin-wrapper { padding: 0; overflow: hidden; padding-bottom: 20px; }
 
+.main { clear: both; }
 /*header*/
 
-.header { background: #01e376 url(img/header-bg.png) repeat-x 0 0; height: 30px; border-bottom: 1px solid #01e376; padding-bottom: 20px; margin: 0; }
+.header { float:left; width: 100%; background: #01e376 url(img/header-bg.png) repeat-x 0 0; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
+.header .logo { margin: 10px; float:left;}
+.header .logo a { display: block; float:left; width: 150px; height: 41px; text-indent: 100000px; overflow: hidden; background: url(img/admin-logo.png) no-repeat 0 0; }
 
 /* navigation */
 
@@ -68,7 +71,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 .content form label { float:left; width: 150px; }
 .content form input, .content form textarea { float: left; }
 .content form .submit-new { left:0; margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 10;}
-.content form .submit-new button { margin-top: 20px; float:left; margin-right: 10px; }
+.content form .submit-new button { margin-top: 20px; float:left; margin-right: 10px; position: relative; z-index: 300; }
 .content form .submit-new h1 { float:left; margin-left: 10px; width: 60%; position:relative; left:16%; }
 
 /* dashboard */
@@ -130,7 +133,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 -o-border-radius: 5px 5px 5px 5px;
 }
 .articles table td { padding: 5px 10px; border: 1px solid #888888; border-right: 0; border-left: 0; }
-.articles table th { padding: 10px; color:#ffffff; background: #888888; }
+.articles table th { padding: 10px; color:#ffffff; background: #888888; text-align: left; }
 
 .articles .paginationControl { margin: 5px 0; }
 

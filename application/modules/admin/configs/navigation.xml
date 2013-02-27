@@ -120,11 +120,11 @@
 			</products>
 			</pages>
 		</store>
-		<gallery>
+		<!--gallery>
 			<label>Gallery</label>
 			<uri>/admin/gallery</uri>
 			<class>gall</class>
-		</gallery>
+		</gallery -->
 		<settings>
 			<label>Settings</label>
 			<uri>/admin/index/dashboard</uri>
