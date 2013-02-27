@@ -11,7 +11,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 
 /* navigation */
 
-.nav {float: left; width: 15%; background: #ffffff;  border-right: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 5px 0;
+.nav {position:relative; z-index: 15; float: left; width: 15%; background: #ffffff;  border-right: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 5px 0;
 -moz-border-radius: 0 0 5px 0;
 -webkit-border-radius: 0 0 5px 0;
 -o-border-radius: 0 0 5px 0;
@@ -67,9 +67,9 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 .content form .fields { top:75px; }
 .content form label { float:left; width: 150px; }
 .content form input, .content form textarea { float: left; }
-.content form .submit-new { margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 100;}
+.content form .submit-new { left:0; margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 10;}
 .content form .submit-new button { margin-top: 20px; float:left; margin-right: 10px; }
-.content form .submit-new h1 { float:left; margin-left: 10px; width: 60%; }
+.content form .submit-new h1 { float:left; margin-left: 10px; width: 60%; position:relative; left:16%; }
 
 /* dashboard */
 .dashboard, 
@@ -136,7 +136,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 
 
 /* right sidebar */
-.sidebar { float:right; width: 15%; color:#888888; background: #ffffff; border-left: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 0 5px;
+.sidebar { position:relative; z-index:15; float:right; width: 15%; color:#888888; background: #ffffff; border-left: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 0 5px;
 -moz-border-radius: 0 0 0 5px;
 -webkit-border-radius: 0 0 0 5px;
 -o-border-radius: 0 0 0 5px;
