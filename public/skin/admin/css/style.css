@@ -3,7 +3,7 @@
 html,body { margin: 0; padding: 0; }
 body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size: 14px; }
 
-.admin-wrapper { padding: 0; }
+.admin-wrapper { padding: 0; overflow: hidden; }
 
 /*header*/
 
@@ -58,7 +58,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 .nav ul li ul li:hover a,
 	.nav ul li ul li a:hover  { color: #ffffff; background: #01e376; }
 .nav ul li ul li:hover ul li a { background: transparent; color:#888888; }
-
+.nav ul li ul li:hover ul li a:hover { color: #ffffff; background: #01e376; }
 
 /* content */
 .content { float:left; width: 69%; min-height: 10px; background: #f7f7f7; color:#888888;}
