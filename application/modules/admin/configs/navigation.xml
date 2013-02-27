@@ -126,8 +126,31 @@
 		</gallery -->
 		<settings>
 			<label>Settings</label>
-			<uri>/admin/index/dashboard</uri>
+			<uri>/admin/settings/index</uri>
 			<class>settings</class>
+			<pages>
+				<general>
+					<label>General settings</label>
+					<uri>/admin/settings/general</uri>
+					<class>gen</class>
+				</general>
+				<modules>
+					<label>Modules</label>
+					<uri>/admin/settings/modules</uri>
+					<class>mod</class>
+				</modules>
+				<contact>
+					<label>Contact information</label>
+					<uri>/admin/settings/contact</uri>
+					<class>cont</class>
+				</contact>
+				
+				<users>
+					<label>Manage users</label>
+					<uri>/admin/settings/users</uri>
+					<class>user</class>
+				</users>
+			</pages>
 		</settings>
 	<!--	<pages>
 			<label>Cms</label>

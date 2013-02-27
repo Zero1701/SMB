@@ -31,40 +31,28 @@ class Admin_SettingsController extends Zend_Controller_Action
             $this->redirect('admin/index/login');
         }
 
-        $editForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/edit','method' => 'get','id' => 'edit','class' => 'edit','name' => 'edit','submitLabel' => 'Edit' ));
-        $this->view->editForm = $editForm;
         
-        $deleteForm = new Admin_Form_EditDelete(array('action' => '/admin/categories/deletecategory','method' => 'get','id' => 'delete','class' => 'delete','name' => 'delete','submitLabel' => 'Delete' ));
-        $this->view->deleteForm = $deleteForm;
-        
-        $upForm = new Admin_Form_EditDelete(array('action' => '#','method' => 'post','id' => 'up','class' => 'up','name' => 'up','submitLabel' => '+' ));
-        $this->view->upForm = $upForm;
-        
-        $downForm = new Admin_Form_EditDelete(array('action' => '#','method' => 'post','id' => 'down','class' => 'down','name' => 'down','submitLabel' => '-' ));
-        $this->view->downForm = $downForm;
-        
-        $categories = new Application_Model_Categories_Data_Categories();
-        $lang = new Application_Model_Lang_Data_Lang();
-        $userData = new Application_Model_UserData_Data_UserData();
-        
-        
-        
-        if($this->hasParam('page')) {
-            $allCategories = $categories->getAllPaginator($this->getParam('page'));
-            $this->view->pageNum = $allCategories->getPages()->pageCount;
-        }
-        else {
-            $allCategories = $categories->getAllPaginator(1);
-            $this->view->pageNum = $allCategories->getPages()->pageCount;
-        }
-        
-        
-        
-        $this->view->categories = $allCategories;
-        $this->view->lang = $lang;
-        $this->view->userData = $userData;
-        $this->view->messages = $this->_helper->flashMessenger->getMessages('actions');
-        
+    }
+    
+    public function generalAction(){
+    	
+    	
+    }
+    
+    public function contactAction(){
+    	
+    }
+    
+    public function modulesAction(){
+    	
+    }
+    
+    public function saveAction(){
+    	
+    }
+    
+    public function usersAction(){
+    	
     }
     
     public function newAction()

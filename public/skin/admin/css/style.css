@@ -8,7 +8,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #ececec; font-size
 .main { clear: both; margin-top: 67px; }
 /*header*/
 
-.header { box-shadow: 0 1px 5px rgba(0,0,0,0.5); z-index: 300; position: fixed; float:left; width: 100%; background: #01ec7b url(img/header-bg.png) repeat-x 0 bottom; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
+.header { box-shadow: 0 1px 5px rgba(0,0,0,0.5); z-index: 300; position: fixed; float:left; width: 100%; background: #02fb83 url(img/header-bg.png) repeat-x 0 bottom; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
 .header .logo { margin: 10px; float:left;}
 .header .logo a { display: block; float:left; width: 150px; height: 41px; text-indent: 100000px; overflow: hidden; background: url(img/admin-logo.png) no-repeat 0 0; }
 
@@ -125,7 +125,46 @@ body { font-family: Arial, Helvetica, sans-serif; background: #ececec; font-size
 .nav ul li a.feat:hover { background-position: 90% -648px; }
 .nav ul li.active ul li.active ul li.active a.feat,
 	.nav ul li.active ul li.active ul li.active a.feat:hover  { background-position: 90% -678px; }	
-	
+
+
+.nav ul li a.gen{ background-position: 90% -888px; }
+.nav ul li.active ul li a.gen{ background-position: 90% -888px; }
+
+.nav ul li.active ul li a.gen:hover { background-position: 90% -918px; }
+.nav ul li a.gen:hover { background-position: 90% -918px; }
+
+.nav ul li ul li.active a.gen, 
+.nav ul li ul li.active a.gen:hover{ background-position: 90% -948px; }
+
+.nav ul li a.mod{ background-position: 90% -978px; }
+.nav ul li.active ul li a.mod{ background-position: 90% -978px; }
+
+.nav ul li.active ul li a.mod:hover { background-position: 90% -1008px; }
+.nav ul li a.mod:hover { background-position: 90% -1008px; }
+
+.nav ul li ul li.active a.mod, 
+.nav ul li ul li.active a.mod:hover{ background-position: 90% -1038px; }
+
+
+.nav ul li a.cont{ background-position: 90% -1068px; }
+.nav ul li.active ul li a.cont{ background-position: 90% -1068px; }
+
+.nav ul li.active ul li a.cont:hover { background-position: 90% -1098px; }
+.nav ul li a.cont:hover { background-position: 90% -1098px; }
+
+.nav ul li ul li.active a.cont, 
+.nav ul li ul li.active a.cont:hover{ background-position: 90% -1128px; }
+
+.nav ul li a.user{ background-position: 90% -1158px; }
+.nav ul li.active ul li a.user{ background-position: 90% -1158px; }
+
+.nav ul li.active ul li a.user:hover { background-position: 90% -1188px; }
+.nav ul li a.user:hover { background-position: 90% -1188px; }
+
+.nav ul li ul li.active a.user, 
+.nav ul li ul li.active a.user:hover{ background-position: 90% -1218px; }
+
+
 
 /* content */
 .content { float:left; width: 69%; min-height: 10px; color:#444444;}
@@ -194,6 +233,19 @@ body { font-family: Arial, Helvetica, sans-serif; background: #ececec; font-size
 
 .store .quick-action a h3 { margin:5px 0px 0; }
 
+/*settings*/
+
+.dashboard .quick-action .general span.icon { background-position: 10px -1170px; }
+.dashboard .quick-action .general:hover span.icon { background-position: -90px -1170px; }
+
+.dashboard .quick-action .mods span.icon { background-position: 10px -1053px; }
+.dashboard .quick-action .mods:hover span.icon { background-position: -91px -1053px; }
+
+.dashboard .quick-action .cntct span.icon { background-position: 15px -940px; }
+.dashboard .quick-action .cntct:hover span.icon { background-position: -86px -940px; }
+
+.dashboard .quick-action .users span.icon { background-position: 5px -1287px; }
+.dashboard .quick-action .users:hover span.icon { background-position: -95px -1287px; }
 
 /* articles */
 .articles { padding: 0px 20px; }
