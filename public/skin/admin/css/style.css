@@ -62,8 +62,16 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 
 /* content */
 .content { float:left; width: 69%; min-height: 10px; background: #f7f7f7; color:#888888;}
+.content form { }
+.content form div { margin: 5px 0; float:left; clear: both; position: relative; }
+.content form .fields { top:75px; }
+.content form label { float:left; width: 150px; }
+.content form input, .content form textarea { float: left; }
+.content form .submit { margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 100;}
+.content form .submit button { margin-top: 20px; float:left; margin-right: 10px; }
+.content form .submit h1 { float:left; margin-left: 10px; width: 60%; }
 
-/*dashboard*/
+/* dashboard */
 .dashboard, 
 	.store { padding: 0 20px; }
 .dashboard .quick-action, 
@@ -115,7 +123,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 
 
 /* articles */
-.articles { padding: 10px; }
+.articles { padding: 0px 20px; }
 .articles table { border-collapse: collapse; border: 1px solid #888888; background: #ffffff; width: 100%; border-radius: 5px 5px 5px 5px;
 -moz-border-radius: 5px 5px 5px 5px;
 -webkit-border-radius: 5px 5px 5px 5px;
@@ -126,8 +134,8 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 
 .articles .paginationControl { margin: 5px 0; }
 
-/* right sidebar */
 
+/* right sidebar */
 .sidebar { float:right; width: 15%; color:#888888; background: #ffffff; border-left: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 0 5px;
 -moz-border-radius: 0 0 0 5px;
 -webkit-border-radius: 0 0 0 5px;

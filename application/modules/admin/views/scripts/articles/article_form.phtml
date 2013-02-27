@@ -3,7 +3,13 @@
       name="<?php echo $this->escape($this->element->getName());?>"
       id="<?php echo $this->escape($this->element->getAttrib('id'));?>"
       class="<?php echo $this->escape($this->element->getAttrib('class'));?>">
+      
+    <div class="submit">
+    	<h1>Add new Article</h1>
+    	<?php echo $this->element->submitButton; ?>
+	</div>
 
+	<div class="fields">
     <div>
     <label for="title">Title :</label>
     <?php echo $this->element->title;?>
@@ -34,7 +40,5 @@
     <?php echo $this->element->description; ?>
     </div>
     
-<div class="submit">
-    <?php echo $this->element->submitButton; ?>
-</div>
+	</div>
 </form>
