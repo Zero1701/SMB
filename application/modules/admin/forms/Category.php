@@ -77,7 +77,10 @@ class Admin_Form_Category extends Zend_Form
         
         
         $productsSelect = new Zend_Form_Element_Multiselect('products');
-        $productsSelect->setMultiOptions($productList);
+        $productsSelect->setMultiOptions($productList)
+                       ->removeDecorator('label')  
+                       ->removeDecorator('DtDdWrapper')
+                       ->removeDecorator('htmlTag');
    
         
         
