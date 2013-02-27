@@ -1,78 +1,148 @@
 @CHARSET "UTF-8";
 
 html,body { margin: 0; padding: 0; }
-body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size: 14px; }
+body { font-family: Arial, Helvetica, sans-serif; background: #ececec; font-size: 14px; position: relative; }
 
-.admin-wrapper { padding: 0; overflow: hidden; padding-bottom: 20px; }
+.admin-wrapper { padding: 0; overflow: hidden; padding-bottom: 20px; min-height: 500px; position:relative; }
 
-.main { clear: both; }
+.main { clear: both; margin-top: 67px; }
 /*header*/
 
-.header { float:left; width: 100%; background: #01e376 url(img/header-bg.png) repeat-x 0 0; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
+.header { box-shadow: 0 1px 5px rgba(0,0,0,0.5); z-index: 300; position: fixed; float:left; width: 100%; background: #01ec7b url(img/header-bg.png) repeat-x 0 bottom; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
 .header .logo { margin: 10px; float:left;}
 .header .logo a { display: block; float:left; width: 150px; height: 41px; text-indent: 100000px; overflow: hidden; background: url(img/admin-logo.png) no-repeat 0 0; }
 
 /* navigation */
 
-.nav {position:relative; z-index: 15; float: left; width: 15%; background: #ffffff;  border-right: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 5px 0;
+.nav {position:relative; z-index: 15; float: left; width: 15%; background: #f7f7f7;  border-right: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 5px 0;
 -moz-border-radius: 0 0 5px 0;
 -webkit-border-radius: 0 0 5px 0;
 -o-border-radius: 0 0 5px 0;
 }
 .nav ul.navigation { margin: 0; list-style-type: none; padding: 0; }
-.nav ul.navigation li { font-weight: bold; padding-left: 0px; line-height: 40px;  display: block; position:relative; }
-.nav ul li a {  border-bottom: 1px solid #ffffff; line-height: 40px; display: block; padding-left: 25px; color:#888888; text-decoration: none;}
-.nav ul li a:hover,
-	.nav ul li:hover a { color: #ffffff; background: #01e376; }
+.nav ul li { position:relative; left: 0; line-height: 35px; background: url(img/nav-bg-mtx.png) repeat-x 0 -36px; }
+.nav ul li:hover { background-position: 0 top; }
+.nav ul ul { list-style-type: none; padding: 0; box-shadow: 1px 1px 5px rgba(0,0,0,0.3); position: absolute; width: 100%; left: 100000px; background: #f5f5f5; border: 1px solid #888888; }
+.nav ul li a { border-top: 1px solid #dddddd; font-weight:bold; padding-left: 20px; text-decoration: none; color:#444444; display:block; }
+.nav ul li:last-child a {  }
+.nav ul li a.store { padding-left: 20px; }
 
-.nav ul li.active a { background: transparent; color:#01e376; }
+/*.nav ul ul ul li:hover { background-color: #fe0160;}*/
 
-.nav ul.navigation ul,
-	.nav ul li.active ul li ul { box-shadow: 0px 1px 5px rgba(0,0,0,0.3); position: absolute; left: 10000px; padding-left: 0px; list-style: none; background: white; border: 1px solid #888888;
-}
+/*hover*/
 
-.nav ul ul li,
-.nav ul.navigation ul li { padding: 0; font-weight: normal; }
-.nav ul ul li a { background: transparent; font-size: 12px;  }
+.nav ul li:hover ul { left:100%; top:0; }
+.nav ul li:hover ul li ul { left: -100000px; }
+.nav ul li ul li:hover ul { left: 100%; }
+.nav ul ul li a { font-size: 13px; }
 
-
-.nav ul li:hover ul,
-	.nav ul li.active ul li:hover ul { left: 100%; width: 100%; z-index:10; top: 0px; }
-.nav ul li:hover ul li a { background: transparent; color:#888888; }
-.nav ul li ul li a:hover  { color: #ffffff; background: #01e376; }
-
-.nav ul li.active ul,
-.nav ul li.active ul li.active ul  { background: transparent; position: relative; left: 0; border:0; box-shadow: 0 0 0; }
-.nav ul li.active ul li a,
-	.nav ul li.active ul li.active ul li a { padding-left: 35px; color:#888888; line-height: 25px; font-size: 12px; }
-.nav ul li.active ul li a:hover { color:#ffffff; background: #01e376; }
-.nav ul li.active ul li.active ul li a { padding-left: 45px; font-size:11px; }
-
-.nav ul li:hover ul ul { left: 10000px; }
-.nav ul ul li:hover ul { left: 100%; }
-
-/* purple: #fe0160 */
-
-.nav ul li.active ul li.active a,
-	.nav ul li.active ul li.active a:hover { color:#fe0160; background: transparent; }
-.nav ul li.active ul li.active ul a:hover { color:#ffffff; background: #fe0160; }
+.nav ul ul li { background: transparent; }
+.nav ul ul li a:hover { color:#01e376; }
+.nav ul ul ul li a { font-size: 11px; }
 
 
-.nav ul li ul li:hover a,
-	.nav ul li ul li a:hover  { color: #ffffff; background: #01e376; }
-.nav ul li ul li:hover ul li a { background: transparent; color:#888888; }
-.nav ul li ul li:hover ul li a:hover { color: #ffffff; background: #01e376; }
+/*active*/
+
+.nav ul li.active{ background-color: #01e376; }
+.nav ul li.active ul { position: relative; left: 0; box-shadow: 0 0 0; border: 0; }
+.nav ul li.active ul ul { box-shadow: 1px 1px 5px rgba(0,0,0,0.3); position: absolute; width: 100%; left: 100000px; background: #ffffff; border: 1px solid #888888; }
+.nav ul li.active ul li { background: transparent; }
+.nav ul li.active ul li a:hover { color:#01e376; }
+.nav ul li.active ul li.active { background:#01e376; }
+.nav ul li.active ul li.active a:hover { color:#ffffff; }
+.nav ul li.active a { padding-left: 20px; color:#ffffff; border-color:#01ce6b; }
+.nav ul li.active ul a { color: #444444; padding-left: 35px; border-color:#dddddd; }
+.nav ul ul li.active a { color:#ffffff; }
+.nav ul ul li.active ul li a { color:#444444; }
+
+.nav ul ul li.active ul,
+	.nav ul ul li.active:hover ul,
+	.nav ul li.active:hover ul li.active ul { position:relative; left: 0; border:0; box-shadow: 0 0 0; }
+.nav ul ul li.active ul a,
+	.nav ul ul li.active:hover ul a,
+	.nav ul li.active:hover ul li.active ul a { color:#444444; padding-left: 45px; font-size: 11px; border-color:#dddddd;}
+
+.nav ul li.active ul li.active ul a:hover { color:#01e376; }
+
+
+/*---- link backgrounds ----*/
+
+.nav ul li a { background-image: url(img/nav-mtx.png); background-repeat: no-repeat; }
+.nav ul li a.dash { background-position: 90% 13px; }
+.nav ul li.active a.dash{ background-position: 90% -47px; }
+
+.nav ul li a.article { background-position: 90% -77px; }
+.nav ul li.active a.article{ background-position: 90% -137px; }
+
+.nav ul li a.page { background-position: 90% -169px; }
+.nav ul li.active a.page { background-position: 90% -229px; }
+
+.nav ul li a.settings { background-position: 90% -257px; }
+.nav ul li.active a.settings { background-position: 90% -317px; }
+
+.nav ul li a.store { background-position: 90% -348px; }
+.nav ul li.active a.store { background-position: 90% -408px; }
+
+.nav ul li a.cat { background-position: 90% -439px; }
+ .nav ul li.active ul li a.cat { background-position: 90% -439px; }
+
+.nav ul li a.cat:hover { background-position: 90% -469px; }
+ .nav ul li.active ul li a.cat:hover { background-position: 90% -469px; }
+.nav ul li.active ul li.active a.cat,
+	.nav ul li.active ul li.active a.cat:hover { background-position: 90% -498px; }
+
+.nav ul li a.prod{ background-position: 90% -528px; }
+ .nav ul li.active ul li a.prod { background-position: 90% -528px; }
+
+ .nav ul li.active ul li a.prod:hover { background-position: 90% -558px; }
+.nav ul li a.prod:hover { background-position: 90% -558px; }
+.nav ul li.active ul li.active a.prod,
+	.nav ul li.active ul li.active a.prod:hover  { background-position: 90% -588px; }
+	
+	
+.nav ul li a.new{ background-position: 90% -798px; }
+ .nav ul li.active ul li a.new{ background-position: 90% -798px; }
+
+ .nav ul li.active ul li a.new:hover { background-position: 90% -828px; }
+.nav ul li a.new:hover { background-position: 90% -828px; }
+.nav ul li.active ul li.active ul li.active a.new,
+	.nav ul li.active ul li.active ul li.active a.new:hover  { background-position: 90% -858px; }	
+
+
+.nav ul li a.list{ background-position: 90% -706px; }
+.nav ul li.active ul li a.list{ background-position: 90% -706px; }
+
+.nav ul li.active ul li a.list:hover { background-position: 90% -736px; }
+.nav ul li a.list:hover { background-position: 90% -736px; }
+.nav ul li.active ul li.active ul li.active a.list,
+	.nav ul li.active ul li.active ul li.active a.list:hover  { background-position: 90% -766px; }	
+
+
+.nav ul li a.feat{ background-position: 90% -618px; }
+.nav ul li.active ul li a.feat{ background-position: 90% -618px; }
+
+.nav ul li.active ul li a.feat:hover { background-position: 90% -648px; }
+.nav ul li a.feat:hover { background-position: 90% -648px; }
+.nav ul li.active ul li.active ul li.active a.feat,
+	.nav ul li.active ul li.active ul li.active a.feat:hover  { background-position: 90% -678px; }	
+	
 
 /* content */
-.content { float:left; width: 69%; min-height: 10px; background: #f7f7f7; color:#888888;}
+.content { float:left; width: 69%; min-height: 10px; color:#444444;}
 .content form { }
 .content form div { margin: 5px 0; float:left; clear: both; position: relative; }
 .content form .fields { margin-top:75px; }
 .content form label { float:left; width: 150px; }
 .content form input, .content form textarea { float: left; }
 .content form .submit-new { left:0; margin-top: 0px; position: fixed; width: 100%; background: rgba(255, 255, 255, 0.6); z-index: 10;}
-.content form .submit-new button { margin-top: 20px; float:left; margin-right: 10px; position: relative; z-index: 300; }
+.content form .submit-new button { cursor:pointer; border:1px solid #888888; background:#01e376 url(img/nav-bg-mtx.png) repeat-x 0 0;padding: 3px 10px; font-weight: bold; color:#ffffff; margin-top: 23px; float:left; margin-right: 10px; position: relative; z-index: 300; border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
+-o-border-radius: 5px 5px 5px 5px;
+}
 .content form .submit-new h1 { float:left; margin-left: 10px; width: 60%; position:relative; left:16%; }
+.content form fieldset { padding: 0; border: 0; }
+.content form fieldset input { margin-right: 5px; }
 
 /* dashboard */
 .dashboard, 
@@ -84,14 +154,14 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 	
 	
 .dashboard .quick-action a,
-	.store .quick-action a { background: #ffffff; display: inline-block; border: 1px solid #888888; padding: 10px; text-align: center; width: 130px; text-decoration : none; color:#888888; margin-right: 35px; font-weight: normal; border-radius: 5px 5px 5px 5px;
+	.store .quick-action a { background: #ffffff; display: inline-block; border: 1px solid #888888; padding: 10px; text-align: center; width: 130px; text-decoration : none; color:#444444; margin-right: 35px; font-weight: normal; border-radius: 5px 5px 5px 5px;
 -moz-border-radius: 5px 5px 5px 5px;
 -webkit-border-radius: 5px 5px 5px 5px;
 -o-border-radius: 5px 5px 5px 5px;
 }
 
 .dashboard .quick-action a:hover,
-	.store .quick-action a:hover { box-shadow:inset 0px 0px 5px #888888; }
+	.store .quick-action a:hover { box-shadow:inset 0px 0px 5px #444444; }
 
 .dashboard .quick-action a:last-child { margin-right: 0; }
 .dashboard .quick-action a span.icon,
@@ -133,16 +203,20 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f7f7f7; font-size
 -o-border-radius: 5px 5px 5px 5px;
 }
 .articles table td { padding: 5px 10px; border: 1px solid #888888; border-right: 0; border-left: 0; }
-.articles table th { padding: 10px; color:#ffffff; background: #888888; text-align: left; }
+.articles table th { padding: 10px; color:#ffffff; background: #444444; text-align: left; }
 
 .articles .paginationControl { margin: 5px 0; }
 
 
 /* right sidebar */
-.sidebar { position:relative; z-index:15; float:right; width: 15%; color:#888888; background: #ffffff; border-left: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 0 5px;
+.sidebar { position:relative; z-index:15; float:right; width: 15%; color:#444444; background: #ffffff; border-left: 1px solid #888888; border-bottom: 1px solid #888888; border-radius: 0 0 0 5px;
 -moz-border-radius: 0 0 0 5px;
 -webkit-border-radius: 0 0 0 5px;
 -o-border-radius: 0 0 0 5px;
 }
 .sidebar .block { padding-left: 10px; }
 .sidebar .block h3 { font-size: 14px; }
+
+/* footer */
+.footer { text-shadow: 1px 1px 1px #ffffff; clear: both; float:left; position:absolute; top:auto; bottom: 10px; width: 100%; color: #888888; text-align: center; }
+

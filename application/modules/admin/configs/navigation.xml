@@ -11,25 +11,24 @@
 			<label>Articles</label>
 			<uri>/admin/articles</uri>
 			<class>article</class>
-			<resource>nav-article</resource>
 			<pages>
 				
 				<articles_new>
 					<label>Add new article</label>
 					<uri>/admin/articles/new</uri>
-					<class>art-new</class>
+					<class>new</class>
 				</articles_new>
 				
 				<articles_all>
 					<label>All articles</label>
 					<uri>/admin/articles</uri>
-					<class>arts</class>
+					<class>list</class>
 				</articles_all>
 				
 				<articles_feat>
 					<label>Featured articles</label>
 					<uri>/admin/articles/featured</uri>
-					<class>art-feat</class>
+					<class>feat</class>
 				</articles_feat>
 				
 			</pages>
@@ -44,19 +43,19 @@
 						<page_new>
 							<label>Add new page</label>
 							<uri>/admin/pages/new</uri>
-							<class>prod-new</class>
+							<class>new</class>
 						</page_new>
 				
 						<page_all>
 							<label>All Pages</label>
 							<uri>/admin/pages</uri>
-							<class>prods</class>
+							<class>list</class>
 						</page_all>
 				
 						<prods_feat>
 							<label>Featured pages</label>
 							<uri>/admin/pages/featured</uri>
-							<class>prod-feat</class>
+							<class>feat</class>
 						</prods_feat>
 				
 				</pages>
@@ -69,25 +68,25 @@
 				<categories>
 				<label>Categories</label>
 				<uri>/admin/categories</uri>
-				<class>category</class>
+				<class>cat</class>
 				
 					<pages>
 						<cat_new>
 							<label>Add new category</label>
 							<uri>/admin/categories/new</uri>
-							<class>cat-new</class>
+							<class>new</class>
 						</cat_new>
 				
 						<cat_all>
 							<label>All Categories</label>
 							<uri>/admin/categories</uri>
-							<class>cats</class>
+							<class>list</class>
 						</cat_all>
 				
 						<cats_feat>
 							<label>Featured categories</label>
 							<uri>/admin/categories/featured</uri>
-							<class>cat-feat</class>
+							<class>feat</class>
 						</cats_feat>
 				
 				</pages>
@@ -96,24 +95,24 @@
          	<products>
 				<label>Products</label>
 				<uri>/admin/products</uri>
-				<class>product</class>
+				<class>prod</class>
 				<pages>
 						<prod_new>
 							<label>Add new product</label>
 							<uri>/admin/products/new</uri>
-							<class>prod-new</class>
+							<class>new</class>
 						</prod_new>
 				
 						<prod_all>
 							<label>All Products</label>
 							<uri>/admin/products</uri>
-							<class>prods</class>
+							<class>list</class>
 						</prod_all>
 				
 						<prods_feat>
 							<label>Featured products</label>
 							<uri>/admin/products/featured</uri>
-							<class>prod-feat</class>
+							<class>feat</class>
 						</prods_feat>
 				
 				</pages>
