@@ -6,11 +6,63 @@ body { font-family: Arial, Helvetica, sans-serif; background: #ececec; font-size
 .admin-wrapper { padding: 0; overflow: hidden; padding-bottom: 20px; min-height: 500px; position:relative; }
 
 .main { clear: both; margin-top: 67px; }
+
+body input { border:1px solid #444444; border-radius: 3px 3px 3px 3px;
+-o-border-radius: 3px 3px 3px 3px;
+-moz-border-radius: 3px 3px 3px 3px;
+-webkit-border-radius: 3px 3px 3px 3px;
+}
+
+body button { cursor:pointer; border:1px solid #888888; background:#01e376 url(img/nav-bg-mtx.png) repeat-x 0 0;padding: 3px 10px; font-weight: bold; color:#ffffff; border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
+-o-border-radius: 5px 5px 5px 5px;
+}
+
+/********************************* Login *********************************************/
+
+.login-area { color:#444444; margin: 0px auto 0; width: 30%; position:relative; height: 350px; }
+.login-area .wrap { background: #ffffff; position:absolute; top:50%; padding: 5px; width:99%; border: 1px solid #444444; border-radius: 5px 5px 5px 5px;
+-o-border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.login-area .logo { background: url(img/login-admin-logo.png) no-repeat 0 0; float:left; width: 150px; height: 27px; opacity: 0.6; }
+.login-area small { color:#888888; font-size: 10px; float:right; margin-right: 7px; position:relative; top:15px;}
+.login-area .wrap .smb { margin-bottom: 7px; float:left; width:100%; }
+	.login-area .wrap form div { width: 100%; clear:both; margin: 5px 0; float:left; }
+.login-area .wrap form label { width: 28%; display: block; float:left;}
+.login-area .wrap form input { width:  70%; float:left; }
+.login-area button { float:right; margin-right: 5px; background-color:#cccccc; color:#444444; }
+
+
+/*************************************************************************************/
+
+
 /*header*/
 
-.header { box-shadow: 0 1px 5px rgba(0,0,0,0.5); z-index: 300; position: fixed; float:left; width: 100%; background: #02fb83 url(img/header-bg.png) repeat-x 0 bottom; min-height: 30px; border-bottom: 1px solid #01e376; padding-top: 5px; margin: 0; }
+.header { box-shadow: 0 1px 5px rgba(0,0,0,0.5); z-index: 300; position: fixed; float:left; width: 100%; background: #f3f3f3 url(img/header-bg.png) repeat-x 0 bottom; min-height: 30px; border-bottom: 1px solid #dddddd; padding-top: 5px; margin: 0; }
 .header .logo { margin: 10px; float:left;}
 .header .logo a { display: block; float:left; width: 150px; height: 41px; text-indent: 100000px; overflow: hidden; background: url(img/admin-logo.png) no-repeat 0 0; }
+
+
+.header .user-nav { float:right; margin-right: 10px; }
+.header .user-nav ul { list-style-type: none; }
+.header .user-nav ul li { display: block; float:left; line-height: 30px; margin-left: 5px; }
+.header .user-nav ul li a { background: url(img/header-nav.png) no-repeat 0 0 ;display: block; float: left; padding-left: 25px; text-decoration: none; color: #828282; font-weight: bold; text-shadow: 0px 1px 1px #ffffff; }
+.header .user-nav ul li a:hover { color: #01e376; }
+
+.header .user-nav ul li a.logout{ background-position: 7px 9px; }
+.header .user-nav ul li a.logout:hover { background-position: 7px -21px; }
+
+.header .user-nav ul li a.profile { background-position: 7px -51px; }
+.header .user-nav ul li a.profile:hover { background-position: 7px -81px; }
+
+.header .welcome { float:right; color:#828282;}
+.header .welcome p { line-height: 30px; }
+.header .welcome a { color:#666666; text-decoration: none; text-shadow: 0px 1px 1px #ffffff; }
+.header .welcome a:hover { color:#01e376; }
 
 /* navigation */
 

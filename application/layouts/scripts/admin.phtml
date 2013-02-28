@@ -15,6 +15,18 @@
 			<div class="logo">
 				<a href="/admin/index/dashboard">SMB</a>
 			</div>
+			
+			<div class="user-nav">
+				<ul>
+					<li><a class="profile" href="#">Profile</a></li>
+					<li><a class="logout" href="/admin/index/logout">Logout</a></li>
+				</ul>
+			</div>
+			<div class="welcome">
+				<p>
+					Welcome, <a href="#"><?php echo Zend_Auth::getInstance()->getIdentity()->email;?></a>
+				</p>
+			</div>
 		</div>
 		<div class="main">
 			
