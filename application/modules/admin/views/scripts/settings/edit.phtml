@@ -1,7 +1,7 @@
 <?php echo $this->errorMessage; ?>
 <?php echo $this->form; ?>
 
-<?php if($this->images) { ?>
+<?php if($this->webImage || $this->mailImage) { ?>
 <table>
     <thead>
         <tr>
@@ -11,7 +11,13 @@
     </thead>
     <tbody>
         
-            <?php foreach ($this->images as $key) { ?>
+            <?php foreach ($this->webImage as $key) { ?>
+             <tr>
+                 <td><img src="<?php echo $this->imagePath . $key->getImg(); ?>"></td>
+                 <td><?php $this->deleteForm->getElement('id')->setValue($this->escape($key->getId())); echo $this->deleteForm; ?></td>
+             </tr>
+           <?php } ?>
+             <?php foreach ($this->mailImage as $key) { ?>
              <tr>
                  <td><img src="<?php echo $this->imagePath . $key->getImg(); ?>"></td>
                  <td><?php $this->deleteForm->getElement('id')->setValue($this->escape($key->getId())); echo $this->deleteForm; ?></td>
@@ -25,7 +31,7 @@
 
 <script type = "text/javascript">
 
-    var url='<?php echo $this->escape(Zend_Controller_Front::getInstance()->getBaseUrl());?>'+'/admin/categories/deleteimage';
+    var url='<?php echo $this->escape(Zend_Controller_Front::getInstance()->getBaseUrl());?>'+'/admin/settings/deleteimage';
 $('#delete').submit(function() {
 var id = $(this).find("input:hidden").val();
 

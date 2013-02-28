@@ -313,6 +313,14 @@ class Application_Model_Contacts_Data_Contacts extends Application_Model_Abstrac
 		return $map->fetchAllInnerJoin($this->_tableName, 'lang', 'lang', 'id','*','iso', $this->_class);
                 
                 }
+                
+                public function getAllContactsBySettingsId($id){
+                    
+		$map = new Application_Model_DbMapper_DbMapper();
+		
+		return $map->fetchAllInnerJoinId($id, $this->_tableName, 'settingstocontact', 'contact', $this->_tableName . '.id', 'asc', $this->_class, 'settingstocontact.settings_id', '*', null);
+                
+                }
              
 }
 

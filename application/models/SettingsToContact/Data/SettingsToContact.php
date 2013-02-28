@@ -29,7 +29,7 @@ class Application_Model_SettingsToContact_Data_SettingsToContact extends Applica
                 
                 public function setSettings_id($settings_id)
                 {
-                    $this->_settings = (int) $settings_id;
+                    $this->_settings_id = (int) $settings_id;
                     return $this;
                 }
         
@@ -122,11 +122,20 @@ class Application_Model_SettingsToContact_Data_SettingsToContact extends Applica
                     return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'image_id');
                 }
                 
-                public function getAllByProductId($id) {
+                public function getAllBySettingId($id) {
                     
                     $map = new Application_Model_DbMapper_DbMapper();
                     
-                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'product_id');
+                    return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'settings_id');
+                }
+                
+                public function deleteSettToCont($id){
+		
+                    $map = new Application_Model_DbMapper_DbMapper();
+		
+                    return $map->deleteByColumnName($this->_tableName, 'settings_id', $id);
+	        
+                
                 }
                  
 }

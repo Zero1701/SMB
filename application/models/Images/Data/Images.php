@@ -118,6 +118,20 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                     return $map->fetchAllInnerJoinId($id, $this->_tableName, 'categories', 'image', $this->_tableName . '.id', 'asc', $this->_class,'categories.id','*',null);
                 }
                 
+                public function getWebImageBySettingsId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'settings', 'webimg', $this->_tableName . '.id', 'asc', $this->_class,'settings.id','*',null);
+                }
+                
+                public function getMailImageBySettingsId($id) {
+                    
+                    $map = new Application_Model_DbMapper_DbMapper();
+                    
+                    return $map->fetchAllInnerJoinId($id, $this->_tableName, 'settings', 'mailimg', $this->_tableName . '.id', 'asc', $this->_class,'settings.id','*',null);
+                }
+                
                  public function getAllImagesByProductId($id) {
                     
                     $map = new Application_Model_DbMapper_DbMapper();
@@ -146,6 +160,7 @@ class Application_Model_Images_Data_Images extends Application_Model_Abstract_Ab
                    
                     $path = realpath(APPLICATION_PATH . '\\..\\Public') . '\\images\\' . $imgSubFolder . '\\' . $id . '\\';
                
+                   
                     unlink($path . $name);
                     
                     return true;

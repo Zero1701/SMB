@@ -1,1 +1,72 @@
-<?php
+<div class="articles">
+<div id="message_box">
+     <?php if(!empty($this->messages[0])) echo $this->messages[0]; ?>
+</div>
+
+<h1>General settings</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Contact</th>
+            <th>Created by</th>
+            <th>Language</th>
+            <th>Edit / Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+       <?php if($this->settings) { ?>
+        <?php foreach ($this->settings as $key) { ?>
+        <tr>
+            <td><?php echo $this->escape($key->getTitle()); ?></td>
+            <td><?php $contact = $this->contact->getAllContactsBySettingsId($key->getId()); if(isset($contact) && !empty($contact)) { echo $this->escape($contact[0]->getName()); } ?></td>
+            <td><?php $userData = $this->userData->getRowById($key->getCreatedby()); echo $this->escape($userData[0]->getName()) . ' ' . $this->escape($userData[0]->getLastname()); ?></td>
+            <td><?php $lang = $this->lang->getRowById($key->getLang()); echo $this->escape($lang[0]->getLang()); ?></td>
+            <td><?php $this->editForm->getElement('id')->setValue($this->escape($key->getId())); echo $this->editForm; ?>
+                <?php $this->deleteForm->getElement('id')->setValue($this->escape($key->getId())); echo $this->deleteForm; ?>
+            </td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+    </tbody>
+</table>
+
+<?php 
+if($this->pageNum > 1){
+echo $this->paginationControl($this->settings,'Sliding', 'pagination.phtml'); 
+}?>
+
+</div>
+<script type = "text/javascript">
+
+    var url='<?php echo $this->escape(Zend_Controller_Front::getInstance()->getBaseUrl());?>'+'/admin/settings/deletesetting';
+$('#delete').submit(function() {
+var id = $(this).find("input:hidden").val();
+
+	   var answer = confirm("Are you sure you want to delete this setting?")
+if (answer){	
+
+        
+	$.post(url, {id: id, del: 'Yes'}, function(data){
+            
+          
+            var message = $.trim($(".error", data).text());
+            if($($(".error", data)).length > 0){
+             var message = $.trim($(".error", data).text());
+        } else
+            {
+                var message = $.trim($("#message_box", data).text());
+            }
+            
+            alert(message);
+        
+                    window.location.reload();
+		         
+			
+		
+	});
+}
+return false;
+	});
+
+</script>
