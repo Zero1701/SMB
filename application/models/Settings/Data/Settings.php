@@ -244,11 +244,11 @@ class Application_Model_Settings_Data_Settings extends Application_Model_Abstrac
         return true;
     }
 
-    public function getRowByImageId($id, $columnName) {
+     public function getRowByLangId($id) {
 
         $map = new Application_Model_DbMapper_DbMapper();
 
-        return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, $columnName);
+        return $map->fetchAllByColumnName($this->_tableName, $this->_class, $id, 'lang');
     }
 
     public function deleteFolder($id) {

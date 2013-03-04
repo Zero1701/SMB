@@ -1,0 +1,21 @@
+<form action="<?php echo $this->escape($this->element->getAction()); ?>" 
+      method="<?php echo $this->escape($this->element->getMethod()); ?>"
+      name="<?php echo $this->escape($this->element->getName());?>"
+      id="<?php echo $this->escape($this->element->getAttrib('id'));?>"
+      class="<?php echo $this->escape($this->element->getAttrib('class'));?>"
+      enctype="<?php echo $this->escape($this->element->getAttrib('enctype'));?>">
+      
+<div class="fields">
+<div>
+    <label for="language">Language :</label>
+    <?php echo $this->element->language; ?>
+    </div>
+</div>
+   
+    
+        <div>
+    	<?php echo $this->element->submitButton; ?>
+	</div>
+	
+
+</form>

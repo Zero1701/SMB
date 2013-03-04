@@ -6,7 +6,7 @@ class Admin_Form_Settings extends Zend_Form
  public function __construct($option = null) {
         parent::__construct($option);
         
-        $this->setName('ArticleForm');
+        $this->setName('settingsForm');
         $this->setAttrib('id','article')
              ->setAttrib('class', 'article')
              ->setAction('#')

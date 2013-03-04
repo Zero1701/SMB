@@ -796,14 +796,15 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
         $this->_helper->redirector->gotoUrl($url, $options);
     }
     
-     /**
+  /**
    * Translate standard URL parameters (?foo=bar&baz=bork) to zend-style 
    * param (foo/bar/baz/bork).  Query-string style
    * values override existing route-params.
    */
-  public function mergeQueryString(){
-    if ($this->getRequest()->isPost()){
-      //throw new Exception("mergeQueryString only works on GET requests.");
+   public function mergeQueryString(){
+        if ($this->getRequest()->isPost()){
+      //throw new Exception("mergeQueryString only works on GET  requests.");
+        return null;
     }    
     $q = $this->getRequest()->getQuery();
     $p = $this->getRequest()->getParams();
