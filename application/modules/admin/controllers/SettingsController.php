@@ -149,6 +149,22 @@ class Admin_SettingsController extends Zend_Controller_Action {
             $this->view->deleteForm = $deleteForm;
         } else {
 
+            $language = new Application_Model_Lang_Data_Lang();
+
+            if (isset($requestParams['language'])) {
+
+                $langRow = $language->getRowById($requestParams['language']);
+            }
+
+            if (!isset($langRow) && empty($langRow)) {
+                $errorMessage = 'Invalid language Id.';
+                $this->view->errorMessage = $errorMessage;
+                $this->view->form = $form;
+                $this->view->langForm = $langForm;
+                return false;
+            }
+
+
             $form = new Admin_Form_Settings();
             $settings = new Application_Model_Settings_Data_Settings();
             $settingsToContact = new Application_Model_SettingsToContact_Data_SettingsToContact();
@@ -302,7 +318,7 @@ class Admin_SettingsController extends Zend_Controller_Action {
                                     $successMessage = "Image successfully deleted.";
                                     $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');
 
-                                    $this->redirect('admin/settings/edit/id/' . $settingWeb[0]->getId());
+                                    $this->redirect('admin/settings/general/language/' . $settingWeb[0]->getLang());
                                 }
 
                                 if (isset($settingMail) && !empty($settingMail)) {
@@ -313,15 +329,15 @@ class Admin_SettingsController extends Zend_Controller_Action {
                                     $successMessage = "Image successfully deleted.";
                                     $this->_helper->FlashMessenger->addMessage($successMessage, 'actions');
 
-                                    $this->redirect('admin/settings/edit/id/' . $settingMail[0]->getId());
+                                    $this->redirect('admin/settings/general/language/' . $settingMail[0]->getLang());
                                 }
                             } else {
                                 if (isset($settingWeb) && !empty($settingWeb)) {
-                                    $this->redirect('admin/settings/edit/id/' . $settingWeb[0]->getId());
+                                    $this->redirect('admin/settings/general/language/' . $settingWeb[0]->getLang());
                                 }
 
                                 if (isset($settingMail) && !empty($settingMail)) {
-                                    $this->redirect('admin/settings/edit/id/' . $settingMail[0]->getId());
+                                    $this->redirect('admin/settings/general/language/' . $settingMail[0]->getLang());
                                 }
                             }
                         }

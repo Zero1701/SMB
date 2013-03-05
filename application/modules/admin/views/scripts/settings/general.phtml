@@ -28,3 +28,27 @@
 </table>
 
 <?php } ?>
+
+
+<script type = "text/javascript">
+
+    var url='<?php echo $this->escape(Zend_Controller_Front::getInstance()->getBaseUrl());?>'+'/admin/settings/deleteimage';
+$('#delete').submit(function() {
+var id = $(this).find("input:hidden").val();
+
+	   var answer = confirm("Are you sure you want to delete this image?");
+if (answer){	
+
+        
+	$.post(url, {id: id, del: 'Yes'}, function(data){
+		        alert('Image successfully deleted.');
+		       window.location.reload();
+		         
+			
+		
+	});
+}
+return false;
+	});
+
+</script>
